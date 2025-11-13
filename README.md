@@ -13,7 +13,7 @@
 ### ⚡ **Modern Jira Workflow System** (All users)
 ```bash
 # Clone, install, configure  
-git clone https://github.com/your-team/jira-workflow-tools.git
+git clone https://github.com/yonatanp-jfrog/jira-workflow-tools.git
 cd jira-workflow-tools
 pip3 install -r requirements.txt
 cp env.template .env
