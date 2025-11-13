@@ -14,125 +14,53 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 def create_staged_file(epic_name, template_name="RTDEV-epic-lifecycle", **kwargs):
     """
-    Create a staged file using modern templates but legacy workflow format.
+    Create a staged file compatible with staged_epic_creator.py workflow.
     """
-    # Import modern system
-    from jira_tools.core.templates import TemplateManager, TemplateContext
-    
-    # Initialize template manager
-    template_manager = TemplateManager()
-    
-    # Build context like the modern system
-    context = TemplateContext.build_epic_context(
-        epic_name=epic_name,
-        project_key=kwargs.get('project', 'RTDEV'),
-        **kwargs
-    )
-    
-    # Render template to get Jira API payload
-    template_filename = f"{template_name}.j2"
-    template = template_manager.env.get_template(template_filename)
-    rendered_json = template_manager.render_template(template, context)
-    jira_payload = json.loads(rendered_json)
+    # Import the staging creator to use its format
+    from staged_epic_creator import StagedEpicCreator
     
     # Create staged file directory
     staged_dir = Path("staged-issues")
     staged_dir.mkdir(exist_ok=True)
     
-    # Create filename
-    safe_name = epic_name.replace(" ", "-").replace("/", "-").replace(":", "")
-    filename = f"STAGED-{safe_name}.md"
-    filepath = staged_dir / filename
+    # Use StagedEpicCreator to generate the file in the correct format
+    creator = StagedEpicCreator()
     
-    # Extract key info from payload
-    fields = jira_payload['fields']
-    project_name = "RTDEV" if fields.get('project', {}).get('id') == "10129" else "APP"
-    issue_type = "Epic" if fields.get('issuetype', {}).get('id') == "10000" else "Bug"
+    # Map template to project (extract project from template name)
+    project = kwargs.get('project', 'RTDEV')
+    if 'APP' in template_name.upper():
+        project = 'APP'
+    elif 'RTDEV' in template_name.upper():
+        project = 'RTDEV'
     
-    # Generate staged file content
-    content = f"""# [STAGED: {epic_name}] - Ready for Review
-
-**🎯 STAGING STATUS:** Ready for Review  
-**🔄 WORKFLOW:** staged-issues/ → (review/edit) → publish → staged-issues/archived/
-
-## Basic Information
-
-- **Type:** {issue_type}
-- **Status:** STAGED (Not yet published to Jira)
-- **Priority:** {kwargs.get('priority', '4 - Normal')}
-- **Project:** {project_name}
-- **Template:** {template_name}
-- **Teams:** {kwargs.get('team', 'dev-artifactory-lifecycle')}
-- **Product Backlog:** {kwargs.get('product_backlog', 'Q4-25-Backlog')}
-- **Commitment Level:** {kwargs.get('commitment_level', 'Soft Commitment')}
-- **Created:** {datetime.now().isoformat()}
-
-## 📝 Description
-
-================================================================================
-🔸 DESCRIPTION START 🔸
-================================================================================
-
-{kwargs.get('description', '''**Description**
-
-**Problem:** [Describe the problem this epic solves]
-
-**Solution:** [High-level approach to solve the problem]
-
-**Requirements**
-- [ ] [Requirement 1]
-- [ ] [Requirement 2]
-
-**Scope**
-**In Scope:**
-- [What will be delivered]
-
-**Out of Scope:**
-- [What will not be delivered in this epic]
-
-**Definition of Done (DoD)**
-- [ ] All requirements implemented and tested
-- [ ] Code reviewed and approved
-- [ ] Documentation updated''')}
-
-================================================================================
-🔸 DESCRIPTION END 🔸
-================================================================================
-
-## 🎮 Jira API Payload (Generated from Template)
-
-```json
-{json.dumps(jira_payload, indent=2)}
-```
-
-## 📋 Next Steps
-
-1. **Edit this file** in your IDE/text editor
-2. **Review with team** (share via version control if needed)  
-3. **Publish when ready** using: `python3 staged_epic_creator.py submit {filepath}`
-4. **File will move** from `staged-issues/` to `staged-issues/archived/`
-
-## 🎯 Commands for This Workflow
-
-```bash
-# Edit this file
-code {filepath}
-
-# View all staged files
-ls -la staged-issues/
-
-# Publish when ready (moves to archived)
-python3 staged_epic_creator.py submit {filepath}
-
-# View published files  
-ls -la staged-issues/archived/
-```"""
-
-    # Write the staged file
-    with open(filepath, 'w') as f:
-        f.write(content)
+    # Map template to team
+    team = kwargs.get('team')
+    if not team:
+        if 'APP' in project:
+            team = 'app-core'
+        else:
+            team = 'dev-artifactory-lifecycle'
     
-    return filepath
+    # Create the staged epic using the legacy system
+    filepath = creator.create_staged_epic(
+        project=project,
+        epic_name=epic_name,
+        description=kwargs.get('description', 'TBD'),
+        team=team,
+        product_backlog=kwargs.get('product_backlog', 'Q4-25-Backlog'),
+        product_manager=kwargs.get('product_manager', 'Yonatan Philip'),
+        priority=kwargs.get('priority', '4 - Normal'),
+        commitment_level=kwargs.get('commitment_level', 'Soft Commitment'),
+        parent=kwargs.get('parent'),
+        product_priority=kwargs.get('product_priority'),
+        assigned_architect=kwargs.get('assigned_architect'),
+        assigned_ux=kwargs.get('assigned_ux', 'Omer Morag'),
+        assigned_technical_writer=kwargs.get('assigned_technical_writer', 'Michael Berman'),
+        required_doc=kwargs.get('required_doc', 'Yes'),
+        release_notes=kwargs.get('release_notes', 'Yes')
+    )
+    
+    return Path(filepath)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

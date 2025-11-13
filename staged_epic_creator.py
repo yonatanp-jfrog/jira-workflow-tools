@@ -18,7 +18,7 @@ from typing import Dict, Any, Optional
 from pathlib import Path
 import requests
 from config import config
-from jira_formatter_module import jira_formatter
+from jira_tools.core.formatters import jira_formatter
 
 
 class StagedEpicCreator:
