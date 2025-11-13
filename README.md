@@ -30,7 +30,7 @@ This tool is designed to work seamlessly with **Cursor**, **GitHub Copilot**, an
 🤖 Uses: python3 -m jira_tools templates list
         (Then filters/explains APP templates for core team)
 
-👤 "Create a bug epic for the APP core-team with high priority and assign UX designer"
+👤 "Create a high-priority bug for the APP core-team and assign UX designer"
 🤖 Uses: python3 -m jira_tools epic "Critical User Flow Bug" --project APP \
       --template APP-bug-core --priority "2 - High" --ux-designer "sarah.jones"
 
@@ -46,14 +46,15 @@ This tool is designed to work seamlessly with **Cursor**, **GitHub Copilot**, an
 
 - **Project**: `RTDEV` or `APP`
 - **Team**: `platform-team`, `core-team`, `dev-artifactory-lifecycle`, `mobile-team`, etc.
-- **Type**: `epic`, `bug`, `task`, `story`
+- **Type**: `epic` (large initiatives), `bug` (defects), `task` (work items), `story` (features)
 - **Priority**: `high`, `critical`, `normal`, `low`
 - **Roles**: Mention if you need `technical-writer`, `ux-designer`, or `architect` assignments
 
 **Examples of well-structured requests:**
 ```
-✅ "Create a high-priority bug epic for APP core-team with UX designer assigned"
-✅ "Make an RTDEV lifecycle epic for platform-team with technical writer"
+✅ "Create a high-priority bug for APP core-team with UX designer assigned"
+✅ "Make an RTDEV lifecycle epic for platform-team with technical writer" 
+✅ "Create an APP epic for core-team focused on user authentication features"
 ✅ "Show RTDEV-12345 details formatted for our team documentation"
 ✅ "List all templates available for APP project work"
 ```
