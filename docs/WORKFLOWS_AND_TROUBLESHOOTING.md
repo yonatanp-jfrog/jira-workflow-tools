@@ -442,5 +442,5 @@ Create a GitHub issue with:
 
 **Happy workflow management!** 🎯
 
-*For initial setup, see `GETTING_STARTED.md`*  
+*For initial setup, see the main `README.md`*  
 *For staging workflows, see `STAGED_EPIC_WORKFLOW.md`*

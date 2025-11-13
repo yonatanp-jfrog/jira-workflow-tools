@@ -1,187 +1,224 @@
-# 🎯 Jira Workflow Tools - Internal Team Edition
+# 🎯 Jira Workflow Tools - AI-Powered Team Edition
 
-**Modern, secure, and feature-complete toolkit for Jira workflow management.**
+**Modern, secure, and AI-integrated toolkit for seamless Jira workflow management.**
 
-*Formerly known as "Jira" project - now properly named to reflect its comprehensive workflow capabilities.*
-
-> 🚨 **IMPORTANT - LEGACY DEPRECATION:** Legacy scripts (`epic_creator.py`, `create_epic.py`, `jira_viewer.py`) are **DEPRECATED** and will be removed on **2025-03-01**. Use the modern `python3 -m jira_tools` system instead.
+*Designed for AI assistants, perfect for humans.*
 
 ---
 
-## 🚀 Quick Start for Team Members
+## 🤖 **AI-First Workflow** (Primary Usage)
 
-### ⚡ **Modern Jira Workflow System** (All users)
+This tool is designed to work seamlessly with **Cursor**, **GitHub Copilot**, and other agentic AI systems. Instead of remembering complex commands, simply describe what you want to do in natural language.
+
+### **✨ How It Works with AI**
+
+1. **Describe your intent** in natural language to your AI assistant
+2. **AI translates** your request into the appropriate tool commands  
+3. **Tool executes** the Jira operations securely and efficiently
+4. **Results delivered** in your preferred format
+
+### **🎯 Common AI Interactions**
+
+```
+👤 "Create an epic for the new user authentication feature"
+🤖 Uses: python3 -m jira_tools epic "User Authentication" --template APP-epic-core --project APP
+
+👤 "Show me the details of ticket RTDEV-12345 in markdown format"  
+🤖 Uses: python3 -m jira_tools viewer RTDEV-12345 --format markdown
+
+👤 "What templates are available for RTDEV projects?"
+🤖 Uses: python3 -m jira_tools templates list
+
+👤 "Create a complex epic with role assignments for the mobile team"
+🤖 Uses: python3 -m jira_tools epic "Mobile App Redesign" --project APP \
+      --template APP-epic-core --technical-writer "sarah.jones" \
+      --ux-designer "mike.chen" --area "Features & Innovation"
+```
+
+### **🚀 Benefits of AI Integration**
+
+- **Natural Language Interface** - No need to memorize command syntax
+- **Context Awareness** - AI can suggest appropriate templates and projects  
+- **Smart Defaults** - AI applies best practices automatically
+- **Error Prevention** - AI validates inputs before execution
+- **Rich Formatting** - AI can format outputs for your specific needs
+- **Workflow Integration** - Seamlessly fits into your existing development process
+
+---
+
+## ⚡ **Quick Setup (5 minutes)**
+
+### **Prerequisites**
+- **Python 3.9+** - `python3 --version`
+- **Your team's Jira access** - Organization Jira instance
+- **API token** - From your Jira profile settings
+
+### **Setup Steps**
+
+1. **Clone and Install**
 ```bash
-# Clone, install, configure  
 git clone https://github.com/yonatanp-jfrog/jira-workflow-tools.git
 cd jira-workflow-tools
 pip3 install -r requirements.txt
-cp env.template .env
-# Edit .env with your credentials, then:
-python3 -m jira_tools test-config
-
-# Create epics (basic and advanced) 
-python3 -m jira_tools epic "My New Feature" --template APP-epic-core --project APP
-python3 -m jira_tools epic --interactive  # Step-by-step wizard
-python3 -m jira_tools epic "Complex Epic" --project RTDEV \
-  --template RTDEV-epic-lifecycle --commitment-level "Hard Commitment" --area "Features & Innovation" \
-  --technical-writer "michael.berman" --ux-designer "sarah.jones"
-
-# View issues with enhanced capabilities  
-python3 -m jira_tools viewer RTDEV-12345
-python3 -m jira_tools viewer "https://company.atlassian.net/browse/RTDEV-12345" --format markdown
-python3 -m jira_tools viewer "Check issue RTDEV-12345" --raw
-
-# Explore system capabilities and understand templates
-python3 -m jira_tools templates list                        # List all templates with descriptive names
-python3 -m jira_tools templates describe APP-epic-core      # Understand what a template does  
-python3 -m jira_tools templates describe RTDEV-epic-lifecycle  # RTDEV lifecycle template
-python3 -m jira_tools templates describe RTDEV-bug-lifecycle   # RTDEV bug template
-python3 -m jira_tools epic "My Epic" --explain             # Quick template explanation
-python3 -m jira_tools --help
 ```
 
-### 🚨 **Migrating from Legacy Scripts?**
-The modern system (`python3 -m jira_tools`) replaces legacy scripts with enhanced features, security, and team collaboration support.
-
----
-
-## 🎯 **System Features**
-
-### 🔒 **Modern Jira Workflow System** (`jira_tools/`)
-**Complete replacement for legacy scripts with enhanced capabilities**
-
-**✅ Key Features:**
-- **Enhanced epic creation** with human-readable templates and all legacy fields
-- **Interactive wizard mode** with step-by-step prompts and smart defaults
-- **Advanced issue viewer** with URL parsing, multiple formats, and rich display
-- **Human-readable template system** with automatic Jira API translation
-- **Role assignment support** - technical writers, UX designers, architects
-- **Private mode** with encrypted credential storage for enhanced security
-- **Local staging** with comprehensive security measures
-- **Rich CLI** with beautiful output, comprehensive help, and error guidance
-- **No hardcoded secrets** - secure environment variable or private mode configuration
-- **Professional architecture** - modular, testable, maintainable codebase
-
-**🎮 Available Commands:**
+2. **Configure Credentials**
 ```bash
-python3 -m jira_tools --help           # Main help system
-python3 -m jira_tools epic --help      # Epic creation (basic + advanced + interactive)
-python3 -m jira_tools viewer --help    # Issue viewing (enhanced with URL parsing)
-python3 -m jira_tools private --help   # Private mode (encrypted local storage)
-python3 -m jira_tools staging --help   # Local staging (secure issue preparation)
-python3 -m jira_tools templates --help # Template management (Jinja2 + validation)
+cp env.template .env
+# Edit .env with your credentials:
+# JIRA_BASE_URL=https://your-org.atlassian.net
+# JIRA_AUTH_TOKEN=your_api_token_here
 ```
+
+3. **Test Configuration**
+```bash
+python3 -m jira_tools test-config
+# Should show: ✅ Configuration valid, ✅ Connection successful!
+```
+
+### **Getting Your API Token**
+1. Go to your Jira profile → **Security** → **API tokens**
+2. Click **Create API token**
+3. Give it a name (e.g., "AI Jira Tools")
+4. Copy the token and paste into `.env` file
 
 ---
 
-## 📊 **Why Choose the Modern System?**
+## 🔒 **Security & Team Features**
 
-### **🆕 New Users**
-- **Secure by default** - no hardcoded secrets or organizational data
-- **Well documented** - comprehensive guides and help system
-- **Team-friendly** - GitHub integration and professional architecture
-- **Modern best practices** - modular code, comprehensive testing
-
-### **🔧 Advanced Feature Users**  
-- **All legacy fields available** - commitment levels, areas, product priorities, etc.
-- **Enhanced interactive workflows** - smarter prompts and defaults
-- **Template system** - Jinja2-powered, customizable, shareable
-- **Multiple output formats** - console, markdown, JSON with rich formatting
+### **✅ Production Ready**
+- **No hardcoded secrets** - Environment variables or encrypted private mode
+- **Safe for team sharing** - No organizational data embedded in code
+- **Comprehensive security** - Input validation, secure defaults, audit trail
+- **Role-based assignments** - Technical writers, UX designers, architects
+- **Private mode available** - Encrypted credential storage with OS keyring
 
 ### **👥 Team Collaboration**
-- **No security risks** - no hardcoded secrets for safe team sharing
-- **Private mode** - encrypted local storage for enhanced security
-- **GitHub integration** - professional issue templates and documentation
-- **Consistent experience** - same interface and capabilities for all team members
-
-### **⚡ Power Users**
-- **More configuration options** - all legacy fields + role assignments
-- **Human-readable templates** - no more cryptic field IDs, plain English configuration
-- **Advanced field mappings** - comprehensive Jira custom field support with automatic translation
-- **Role-based assignments** - assign technical writers, UX designers, architects
-- **Enhanced URL parsing** - works with any Jira URL format
-- **Professional output** - rich console display + multiple export formats
+- **Consistent AI experience** - Same interface for all team members
+- **Template system** - Human-readable, shareable, customizable
+- **Rich output formats** - Console, markdown, JSON with proper formatting
+- **Professional documentation** - GitHub integration with issue templates
 
 ---
 
-## 🔒 **Security & Best Practices**
+## 🎨 **Available Templates & Projects**
 
-### **Modern System Security** ✅
-- **No hardcoded secrets** - uses environment variables or encrypted private mode
-- **Secure credential storage** - OS keyring integration for private mode
-- **Safe for team sharing** - no organizational data embedded in code
-- **Comprehensive security validation** - automated scanning and auditing
-- **Professional security practices** - input validation, error handling, secure defaults
+### **Current Templates**
+```bash
+# List all available templates
+python3 -m jira_tools templates list
 
-### **⚠️ Legacy System Security Issues** 
-- **DEPRECATED - Contains security risks** - hardcoded JFrog-specific URLs and data
-- **Not suitable for team sharing** - embedded organizational information
-- **Missing dependencies** - broken imports may cause runtime failures
-- **No active maintenance** - security issues will not be fixed
+# Understand what a template does  
+python3 -m jira_tools templates describe APP-epic-core
+python3 -m jira_tools templates describe RTDEV-epic-lifecycle
+```
 
-**🚨 Recommendation:** Migrate to modern system immediately for security and reliability.
+### **Built-in Templates**
+- **APP-epic-core** - Customer-facing features and core application epics
+- **APP-bug-core** - Critical application bugs and customer issues
+- **RTDEV-epic-lifecycle** - Platform features and Artifactory lifecycle work  
+- **RTDEV-bug-lifecycle** - Platform bugs and infrastructure issues
+- **RTDEV-task-lifecycle** - Operational tasks and development work
 
 ---
 
-## 📚 **Documentation**
+## 📚 **Advanced Documentation**
 
-### **🚀 Essential Guides** (Start Here)
-- **[Getting Started](docs/GETTING_STARTED.md)** - Complete setup and basic usage guide
+### **Team Resources**
+- **[Team Setup Guide](TEAM_SETUP.md)** - Complete onboarding for new team members
 - **[Workflows & Troubleshooting](docs/WORKFLOWS_AND_TROUBLESHOOTING.md)** - Advanced workflows and problem solving
-- **[Staged Epic Workflow](docs/STAGED_EPIC_WORKFLOW.md)** - Two-phase collaborative epic creation
+- **[Staged Epic Workflow](docs/STAGED_EPIC_WORKFLOW.md)** - Collaborative epic creation process
+- **[Template Field Mappings](templates/FIELD_MAPPINGS.md)** - Field reference for custom templates
 
-### **🔄 Migration & Team Setup**
-- **[Team Setup Guide](TEAM_SETUP.md)** - Complete team onboarding instructions
-- **[Field Mappings](templates/FIELD_MAPPINGS.md)** - Human-readable template field reference
+### **Support & Contributing**
+- **🐛 Bug Reports:** [Create Issue](../../issues/new?template=bug-report.yml)
+- **💡 Feature Requests:** [Create Issue](../../issues/new?template=feature-request.yml)  
+- **❓ Team Support:** [Create Issue](../../issues/new?template=team-support.yml)
+
+---
+
+## 🛠️ **Manual Usage** (Backup/Advanced Users)
+
+*For direct command-line usage without AI assistance*
+
+### **Core Commands**
+```bash
+# Configuration and testing
+python3 -m jira_tools --help           # Main help system
+python3 -m jira_tools test-config      # Test your setup
+
+# Epic creation
+python3 -m jira_tools epic --interactive                    # Interactive wizard
+python3 -m jira_tools epic "Epic Name" --project RTDEV      # Direct creation
+python3 -m jira_tools epic "Complex Epic" --project RTDEV \
+  --template RTDEV-epic-lifecycle --commitment-level "Hard Commitment" \
+  --area "Features & Innovation" --technical-writer "sarah.jones"
+
+# Issue viewing  
+python3 -m jira_tools viewer RTDEV-12345                    # View issue
+python3 -m jira_tools viewer "https://company.atlassian.net/browse/RTDEV-12345" --format markdown
+python3 -m jira_tools viewer RTDEV-12345 --raw --output report.json
+
+# Template management
+python3 -m jira_tools templates list                        # List templates
+python3 -m jira_tools templates describe APP-epic-core      # Understand template
+```
+
+### **Advanced Configuration**
+```bash
+# Private mode (encrypted storage)
+python3 -m jira_tools private setup    # Set up encrypted storage
+python3 -m jira_tools private status   # Check private mode status
+python3 -m jira_tools private backup   # Backup configuration
+
+# Template validation
+python3 -m jira_tools templates validate path/to/template.j2
+```
+
+### **Manual Troubleshooting**
+```bash
+# Common diagnostic commands
+python3 --version                       # Check Python version (need 3.9+)
+python3 -m jira_tools test-config      # Verify credentials and connectivity
+python3 -m jira_tools templates list   # Check available templates
+pip3 install -r requirements.txt       # Reinstall dependencies if needed
+```
 
 ---
 
 ## 🧪 **Testing & Validation**
 
 ```bash
+# Test the tool without making changes
+python3 -m jira_tools epic "Test Epic" --project RTDEV --dry-run
+
 # Run comprehensive test suite
 python3 tests/test_runner.py
 
-# Test specific systems
-python3 -m jira_tools test-config     # New system
-python3 epic_creator.py --help        # Legacy system
+# Validate templates
+python3 -m jira_tools templates validate templates/APP-epic-core.j2
 ```
-
-**✅ All tests passing:** Security validation, functionality tests, CLI validation, template system
 
 ---
 
-## 🤝 **Contributing & Support**
+## 🚨 **Legacy System Migration**
 
-### **Team Support:**
-- **🐛 Bug Reports:** [Create Issue](../../issues/new?template=bug-report.yml)
-- **💡 Feature Requests:** [Create Issue](../../issues/new?template=feature-request.yml)  
-- **❓ Team Support:** [Create Issue](../../issues/new?template=team-support.yml)
+> **IMPORTANT:** Legacy scripts (`epic_creator.py`, `create_epic.py`, `jira_viewer.py`) are **DEPRECATED** and will be removed on **2025-03-01**. 
 
-### **Contributing:**
-- Both systems are actively maintained
-- New system preferred for new features
-- Legacy system maintained for compatibility
-- See GitHub templates for contribution guidelines
+**Migration is simple:** All legacy functionality is available in the modern system with enhanced features and security.
 
 ---
 
 ## 🎯 **System Status**
 
-| System | Status | Security | Features | Team Ready |
-|--------|--------|----------|----------|------------|
-| **New Modular** | ✅ Production | ✅ Secure | 🔄 Growing | ✅ Yes |
-| **Legacy Enhanced** | ✅ Stable | ⚠️ JFrog-specific | ✅ Complete | ✅ With caution |
+| Component | Status | Security | AI Integration | Team Ready |
+|-----------|--------|----------|----------------|------------|
+| **Core System** | ✅ Production | ✅ Secure | ✅ Optimized | ✅ Yes |
+| **Templates** | ✅ Active | ✅ Validated | ✅ AI-Friendly | ✅ Yes |
+| **Documentation** | ✅ Complete | ✅ Reviewed | ✅ AI-Ready | ✅ Yes |
 
 ---
 
-## 🚀 **Getting Started**
+**🎉 Ready to streamline your Jira workflow with AI-powered automation!**
 
-1. **Follow** [TEAM_SETUP.md](TEAM_SETUP.md) for detailed setup
-2. **Read** [Getting Started Guide](docs/GETTING_STARTED.md) for basic usage
-3. **Explore** [templates/FIELD_MAPPINGS.md](templates/FIELD_MAPPINGS.md) to understand template fields
-4. **Test** your configuration with `python3 -m jira_tools test-config`
-5. **Create** your first epic with `python3 -m jira_tools epic --interactive`
-
-**🎉 Ready to streamline your Jira workflow with human-readable templates!**
+*Have questions? Ask your AI assistant to help you use this tool - that's what it's designed for!*
