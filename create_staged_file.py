@@ -53,7 +53,7 @@ def create_staged_file(epic_name, template_name="RTDEV-epic-lifecycle", **kwargs
     content = f"""# [STAGED: {epic_name}] - Ready for Review
 
 **🎯 STAGING STATUS:** Ready for Review  
-**🔄 WORKFLOW:** staged-issues/ → (review/edit) → publish → archived-published-issues/
+**🔄 WORKFLOW:** staged-issues/ → (review/edit) → publish → staged-issues/archived/
 
 ## Basic Information
 
@@ -110,7 +110,7 @@ def create_staged_file(epic_name, template_name="RTDEV-epic-lifecycle", **kwargs
 1. **Edit this file** in your IDE/text editor
 2. **Review with team** (share via version control if needed)  
 3. **Publish when ready** using: `python3 staged_epic_creator.py submit {filepath}`
-4. **File will move** from `staged-issues/` to `.jira-staging/archived-published-issues/`
+4. **File will move** from `staged-issues/` to `staged-issues/archived/`
 
 ## 🎯 Commands for This Workflow
 
@@ -125,7 +125,7 @@ ls -la staged-issues/
 python3 staged_epic_creator.py submit {filepath}
 
 # View published files  
-ls -la .jira-staging/archived-published-issues/
+ls -la staged-issues/archived/
 ```"""
 
     # Write the staged file

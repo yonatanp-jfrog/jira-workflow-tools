@@ -578,25 +578,31 @@ class StagedEpicCreator:
                 f.write(updated_content)
     
     def _move_to_issues_folder(self, staged_file_path: Path, issue_key: str):
-        """Move successfully submitted epic from staged-issues to Published Issues folder."""
-        import subprocess
-        import os
+        """Move successfully submitted epic from staged-issues to staged-issues/archived/ folder."""
+        import shutil
+        from datetime import datetime
         
-        # Use jira_viewer to fetch and save the issue properly
         try:
-            # The jira_viewer automatically saves to Published Issues folder
-            subprocess.run(['python3', 'jira_viewer.py', issue_key], 
-                          cwd=os.getcwd(), 
-                          capture_output=True)
+            # Create archived folder if it doesn't exist
+            archived_folder = self.staged_folder / "archived"
+            archived_folder.mkdir(exist_ok=True)
             
-            # Remove the staged file after successful move
+            # Generate archived filename with issue key and timestamp
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+            archived_filename = f"{issue_key}-{staged_file_path.stem}-{timestamp}.md"
+            archived_path = archived_folder / archived_filename
+            
+            # Move the staged file to archived folder
             if staged_file_path.exists():
-                staged_file_path.unlink()
-                print(f"✅ Moved staged epic to Published Issues folder and cleaned up staged file")
+                shutil.move(str(staged_file_path), str(archived_path))
+                print(f"✅ Archived staged epic to: staged-issues/archived/{archived_filename}")
+                print(f"📁 Find it at: {archived_path}")
+            else:
+                print(f"⚠️  Staged file not found: {staged_file_path}")
                 
         except Exception as e:
-            print(f"⚠️  Epic created successfully, but couldn't auto-move to Published Issues folder: {e}")
-            print(f"📝 You can manually fetch it with: python3 jira_viewer.py {issue_key}")
+            print(f"⚠️  Epic created successfully, but couldn't archive staged file: {e}")
+            print(f"📝 Staged file remains at: {staged_file_path}")
 
 
 # CLI Commands

@@ -111,18 +111,18 @@ python3 create_staged_epic.py
 python3 staged_epic_creator.py stage --project RTDEV --epic-name "My Epic"
 ```
 
-**This creates:** `staged-issues/RTDEV_YYYYMMDD_My_Epic.md`
+**This creates:** `staged-issues/STAGED-My-Epic.md`
 
 ### **Phase 2: Review and Submit**
 ```bash
 # Edit the staged file with your preferred editor
-code staged-issues/RTDEV_20241112_My_Epic.md
+code staged-issues/STAGED-My-Epic.md
 
 # Review staged content
-python3 staged_epic_creator.py review staged-issues/RTDEV_20241112_My_Epic.md
+python3 staged_epic_creator.py review staged-issues/STAGED-My-Epic.md
 
 # Submit when ready
-python3 staged_epic_creator.py submit staged-issues/RTDEV_20241112_My_Epic.md
+python3 staged_epic_creator.py submit staged-issues/STAGED-My-Epic.md
 ```
 
 ### **Staging Workflow Benefits**
@@ -358,13 +358,13 @@ python3 -m jira_tools epic "Test" --project RTDEV  # Not rtdev or Rtdev
 ls -la staged-issues/
 
 # Use full path or filename only
-python3 staged_epic_creator.py submit staged-issues/RTDEV_20241112_Epic.md
+python3 staged_epic_creator.py submit staged-issues/STAGED-Epic.md
 ```
 
 #### **Problem: "YAML parsing error"**
 ```bash
 # Validate YAML frontmatter
-python3 -c "import yaml; yaml.safe_load(open('staged-issues/file.md').read())"
+python3 -c "import yaml; yaml.safe_load(open('staged-issues/STAGED-file.md').read())"
 
 # Common issues:
 # - Missing --- delimiters

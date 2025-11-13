@@ -143,9 +143,12 @@ staging_info:
 
 ```
 staged-issues/
-├── RTDEV: My Epic.md
-├── APP: UI Improvements.md
-└── RTDEV: Security Epic.md
+├── STAGED-My-Epic.md
+├── STAGED-UI-Improvements.md  
+├── STAGED-Security-Epic.md
+└── archived/
+    ├── RTDEV-12345-My-Epic-20241113_1420.md
+    └── APP-67890-UI-Improvements-20241113_1425.md
 ```
 
 ## 🎯 Workflow Examples
@@ -158,7 +161,7 @@ python3 create_staged_epic.py
 # Follow prompts...
 
 # 2. Edit the generated markdown file
-open "staged-issues/RTDEV: My Epic.md"
+open "staged-issues/STAGED-My-Epic.md"
 
 # 3. Submit when ready
 python3 staged_epic_creator.py submit "RTDEV: My Epic.md"
@@ -172,7 +175,7 @@ python3 staged_epic_creator.py stage RTDEV "User Authentication Epic" \
   --description "Implement OAuth 2.0 authentication"
 
 # 2. Share file with team for review
-# staged-issues/RTDEV: User Authentication Epic.md
+# staged-issues/STAGED-User-Authentication-Epic.md
 
 # 3. Team members edit and add details:
 #    - Technical requirements
@@ -348,7 +351,7 @@ Periodically clean up old staged epics:
 ```bash
 # Archive submitted epics
 mkdir archived-epics
-mv staged-issues/*submitted* archived-epics/
+ls -la staged-issues/archived/  # Published epics are automatically moved here
 ```
 
 ## 🔗 Integration
