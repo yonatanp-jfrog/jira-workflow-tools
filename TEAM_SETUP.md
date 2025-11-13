@@ -16,7 +16,7 @@
 ### 1. Clone and Setup
 ```bash
 # Clone the repository (replace with your team's repo URL)
-git clone https://github.com/your-team/jira-workflow-tools.git
+git clone https://github.com/yonatanp-jfrog/jira-workflow-tools.git
 cd jira-workflow-tools
 
 # Install dependencies
