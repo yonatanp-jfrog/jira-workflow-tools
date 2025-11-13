@@ -1,6 +1,16 @@
 # 🎯 Staged Epic Workflow - Two-Phase Epic Creation
 
-**⚠️ COMPATIBILITY NOTE:** Some staging scripts may require updates for the new human-readable template system. The modern `python3 -m jira_tools` system provides comprehensive epic creation with `--dry-run` for preview.
+**⚠️ NOTE:** This is a **legacy workflow**. For most users, the modern **Cursor AI approach** is recommended:
+
+```
+💬 Ask Cursor: "Create an RTDEV epic for platform-team about authentication, but show me what it will create first"
+🤖 Cursor will: Run python3 -m jira_tools epic "Authentication" --template RTDEV-epic-lifecycle --dry-run
+```
+
+**This staging workflow is useful for:**
+- Complex epics requiring extensive collaboration and review
+- Teams preferring file-based workflows with version control
+- Advanced users who need the two-phase approach
 
 A smart, collaborative workflow for creating Jira epics with review and approval process in jira-workflow-tools.
 

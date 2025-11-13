@@ -2,11 +2,44 @@
 
 **Advanced workflows, staging process, and comprehensive troubleshooting for jira-workflow-tools.**
 
-*Updated for the newly renamed project structure.*
+*Updated for Cursor AI integration and the newly renamed project structure.*
 
 ---
 
-## 📋 **Common Workflows**
+## 🤖 **Cursor AI Workflows** (Recommended)
+
+### 🎯 **Daily Issue Analysis with Cursor**
+```
+💬 Ask Cursor: "Show me the details of RTDEV-12345 and format it for our team meeting"
+
+💬 Ask Cursor: "Get the details of RTDEV-12345 and save it as a markdown report"
+
+💬 Ask Cursor: "I need to analyze tickets RTDEV-12345 and RTDEV-12346 for our standup"
+```
+
+### 🚀 **Epic Creation with Cursor**
+```
+💬 Ask Cursor: "Create an RTDEV epic for platform-team about improving authentication security"
+
+💬 Ask Cursor: "I need an APP epic for core-team with high priority and assign Sarah as UX designer"
+
+💬 Ask Cursor: "Show me what templates are available for RTDEV bugs and help me create one"
+
+💬 Ask Cursor: "Create a complex RTDEV epic with technical writer assignment and show me the preview first"
+```
+
+### 🎨 **Template Management with Cursor**
+```
+💬 Ask Cursor: "What templates do we have available and which one should I use for an APP bug?"
+
+💬 Ask Cursor: "Explain what the RTDEV-epic-lifecycle template includes and when to use it"
+
+💬 Ask Cursor: "Help me understand the difference between APP-epic-core and RTDEV-epic-lifecycle"
+```
+
+---
+
+## 📋 **Manual Workflows** (Advanced Users)
 
 ### 🎯 **Daily Issue Analysis**
 ```bash
@@ -193,6 +226,30 @@ python3 -m jira_tools private backup
 ---
 
 ## 🚨 **Troubleshooting Guide**
+
+### **🤖 Cursor AI Troubleshooting** (Easiest)
+
+```
+💬 Ask Cursor: "I'm getting an authentication error when trying to create an epic, help me debug this"
+
+💬 Ask Cursor: "Test my Jira configuration and tell me if there are any issues"
+
+💬 Ask Cursor: "I can't find the template I need, show me what's available and help me pick the right one"
+
+💬 Ask Cursor: "The epic creation failed, help me understand what went wrong and fix it"
+
+💬 Ask Cursor: "Walk me through setting up my .env file correctly"
+```
+
+**Benefits of Cursor troubleshooting:**
+- 🔍 **Full context** - Cursor sees your entire project and configuration
+- 🧠 **Smart diagnosis** - Cursor can run multiple diagnostic commands automatically
+- 💡 **Guided fixes** - Cursor provides step-by-step solutions
+- 📚 **Documentation aware** - Cursor references all project docs automatically
+
+---
+
+### **🛠️ Manual Troubleshooting** (Advanced Users)
 
 ### **Quick Diagnosis**
 ```bash
@@ -420,23 +477,39 @@ python3 epic_refresher.py --issue KEY       # Refresh specific epic
 
 ## 🆘 **Getting Help**
 
-### **Self-Help Resources**
+### **🥇 Best Option: Ask Cursor AI**
+```
+💬 Ask Cursor: "I'm having trouble with [describe your issue], can you help me troubleshoot?"
+
+💬 Ask Cursor: "This command failed: [paste command and error]. What went wrong and how do I fix it?"
+
+💬 Ask Cursor: "Help me set up my Jira workflow tools from scratch"
+```
+
+**Why Cursor is the best help:**
+- 🎯 **Instant assistance** - No waiting for responses
+- 🧠 **Full context** - Understands your entire project setup
+- 🔧 **Can run fixes** - Executes commands and validates solutions
+- 📚 **Complete knowledge** - References all documentation and templates
+
+### **📚 Self-Help Resources** (Backup)
 1. **Command help:** `python3 -m jira_tools COMMAND --help`
 2. **Configuration test:** `python3 -m jira_tools test-config`
 3. **Template validation:** `python3 -m jira_tools templates validate`
 
-### **Common Solutions**
+### **🔧 Common Solutions**
 - **Authentication:** Regenerate API token, check .env file
 - **Templates:** Validate syntax, check available templates
 - **Staging:** Verify YAML frontmatter, check file paths
 - **Performance:** Check network, try off-peak hours
 
-### **Still Need Help?**
+### **📞 Still Need Human Help?**
 Create a GitHub issue with:
 - Command that failed
 - Full error message  
 - Your environment (Python version, OS)
 - What you were trying to accomplish
+- What Cursor suggested (if you tried that first)
 
 ---
 
