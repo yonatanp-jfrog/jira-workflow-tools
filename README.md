@@ -36,6 +36,10 @@ This tool is specifically designed for **Cursor AI** integration. Instead of mem
 💬 "Help me understand what the RTDEV-epic-lifecycle template includes and when I should use it"
 
 💬 "Set up a complex epic with technical writer and architect assignments for our new mobile initiative"
+
+💬 "Create an RTDEV bug for authentication issues and attach these files: error-screenshot.png, logs.txt, config.json"
+
+💬 "Create an APP epic with design mockups and technical specifications attached automatically"
 ```
 
 ### **💡 How to Get Better AI Results**
@@ -263,6 +267,12 @@ python3 -m jira_tools epic "Epic Name" --project RTDEV      # Direct creation
 python3 -m jira_tools epic "Complex Epic" --project RTDEV \
   --template RTDEV-epic-lifecycle --commitment-level "Hard Commitment" \
   --area "Features & Innovation" --technical-writer "sarah.jones"
+
+# Epic creation with file attachments
+python3 -m jira_tools epic "Bug Fix Epic" --project RTDEV \
+  --template RTDEV-epic-lifecycle --attach "error-log.txt,screenshot.png"
+python3 -m jira_tools epic "Design Epic" --project APP \
+  --template APP-epic-core --attach "mockup.pdf,wireframe.png,specs.docx"
 
 # Issue viewing  
 python3 -m jira_tools viewer RTDEV-12345                    # View issue

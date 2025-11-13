@@ -567,9 +567,10 @@ except ImportError:
     @click.option('--interactive', is_flag=True, help='Interactive mode with step-by-step prompts')
     @click.option('--dry-run', is_flag=True, help='Show rendered template without creating')
     @click.option('--explain', is_flag=True, help='Show what the template will do in human-readable format')
+    @click.option('--attach', help='Comma-separated list of files to attach (e.g., screenshot.png,design.pdf)')
     def epic(epic_name, project, template, description, priority, commitment_level, area, 
              product_manager, product_backlog, parent, product_priority, team, 
-             commitment_reason, technical_writer, ux_designer, architect, interactive, dry_run, explain):
+             commitment_reason, technical_writer, ux_designer, architect, interactive, dry_run, explain, attach):
         """Create a Jira epic using templates."""
         try:
             from jira_tools.core.templates import template_manager, TemplateContext
@@ -687,6 +688,38 @@ except ImportError:
                     console.print("✅ Epic created successfully!")
                     console.print(f"🎫 Epic Key: {result['key']}")
                     console.print(f"🔗 URL: {result.get('web_url', 'N/A')}")
+                    
+                    # Handle file attachments if provided
+                    if attach:
+                        try:
+                            # Parse attachment file paths
+                            file_paths = [path.strip() for path in attach.split(',') if path.strip()]
+                            
+                            if file_paths:
+                                console.print(f"📎 Attaching {len(file_paths)} file(s)...")
+                                
+                                # Attach files to the created issue
+                                attachments = client.attach_files_to_issue(result['key'], file_paths)
+                                
+                                console.print("✅ Files attached successfully!")
+                                for attachment in attachments:
+                                    size_mb = attachment.get('size', 0) / (1024 * 1024)
+                                    console.print(f"   📎 {attachment.get('filename', 'Unknown')} ({size_mb:.1f}MB)")
+                                
+                                # Update issue description with attachment references
+                                attachment_list = []
+                                for attachment in attachments:
+                                    filename = attachment.get('filename', 'Unknown')
+                                    attachment_list.append(f"- 📎 [{filename}]({attachment.get('content', '#')})")
+                                
+                                if attachment_list:
+                                    console.print("💡 Tip: Attachments are now visible in the Jira issue")
+                        
+                        except ValueError as e:
+                            console.print(f"⚠️  Attachment error: {e}", style="yellow")
+                        except Exception as e:
+                            console.print(f"⚠️  Failed to attach files: {e}", style="yellow")
+                            console.print("💡 Epic was created successfully, but file attachment failed")
                 else:
                     console.print("❌ Failed to create epic")
                     

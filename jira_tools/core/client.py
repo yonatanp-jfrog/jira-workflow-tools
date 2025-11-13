@@ -6,6 +6,8 @@ security considerations, and team-focused functionality.
 """
 
 import requests
+import os
+from pathlib import Path
 from typing import Dict, Any, Optional, List
 from .config import ConfigManager
 
@@ -219,6 +221,130 @@ class JiraClient:
                 
         except requests.exceptions.RequestException:
             return None
+    
+    def attach_files_to_issue(self, issue_key: str, file_paths: List[str]) -> List[Dict[str, Any]]:
+        """
+        Attach files to an existing Jira issue.
+        
+        Args:
+            issue_key: The Jira issue key (e.g., 'PROJ-123')
+            file_paths: List of file paths to attach
+            
+        Returns:
+            List of attachment information dictionaries
+            
+        Raises:
+            JiraClientError: For various API errors
+            ValueError: For invalid inputs
+        """
+        if not issue_key or not issue_key.strip():
+            raise ValueError("Issue key cannot be empty")
+        
+        if not file_paths:
+            raise ValueError("No files provided for attachment")
+        
+        # Validate all files exist and are readable
+        validated_files = []
+        for file_path in file_paths:
+            path = Path(file_path)
+            if not path.exists():
+                raise ValueError(f"File not found: {file_path}")
+            if not path.is_file():
+                raise ValueError(f"Path is not a file: {file_path}")
+            if not os.access(path, os.R_OK):
+                raise ValueError(f"File is not readable: {file_path}")
+            
+            # Check file size (Jira typically has a 10MB limit per file)
+            file_size = path.stat().st_size
+            if file_size > 10 * 1024 * 1024:  # 10MB
+                raise ValueError(f"File too large (>10MB): {file_path} ({file_size / 1024 / 1024:.1f}MB)")
+            
+            validated_files.append(path)
+        
+        issue_key = issue_key.strip().upper()
+        url = f"{self.config.jira_api_base}/issue/{issue_key}/attachments"
+        
+        # Prepare headers for attachment upload
+        headers = {
+            'X-Atlassian-Token': 'no-check',  # Required to bypass XSRF check
+            'Authorization': self.session.headers.get('Authorization')
+        }
+        
+        # Prepare files for multipart upload
+        files = []
+        try:
+            for file_path in validated_files:
+                file_handle = open(file_path, 'rb')
+                files.append(('file', (file_path.name, file_handle, self._get_mime_type(file_path))))
+            
+            response = self.session.post(url, headers=headers, files=files, timeout=60)
+            
+            if response.status_code == 200:
+                attachments = response.json()
+                return attachments
+            elif response.status_code == 404:
+                raise JiraNotFoundError(f"Issue {issue_key} not found")
+            elif response.status_code == 401:
+                raise JiraAuthenticationError("Authentication failed")
+            elif response.status_code == 403:
+                raise JiraPermissionError(
+                    f"Access denied. You may not have permission to attach files to issue {issue_key}"
+                )
+            elif response.status_code == 413:
+                raise JiraClientError("File too large for attachment")
+            else:
+                error_msg = f"Failed to attach files to {issue_key}: HTTP {response.status_code}"
+                try:
+                    error_details = response.json()
+                    if 'errorMessages' in error_details:
+                        error_msg += f" - {', '.join(error_details['errorMessages'])}"
+                except:
+                    pass
+                raise JiraClientError(error_msg)
+                
+        except requests.exceptions.Timeout:
+            raise JiraClientError(f"Timeout while attaching files to issue {issue_key}")
+        except requests.exceptions.ConnectionError:
+            raise JiraClientError("Connection error while attaching files")
+        except requests.exceptions.RequestException as e:
+            raise JiraClientError(f"Request failed while attaching files: {e}")
+        finally:
+            # Always close file handles
+            for _, (_, file_handle, _) in files:
+                try:
+                    file_handle.close()
+                except:
+                    pass
+    
+    def _get_mime_type(self, file_path: Path) -> str:
+        """
+        Get MIME type for a file based on its extension.
+        
+        Args:
+            file_path: Path to the file
+            
+        Returns:
+            MIME type string
+        """
+        extension = file_path.suffix.lower()
+        mime_types = {
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.gif': 'image/gif',
+            '.pdf': 'application/pdf',
+            '.doc': 'application/msword',
+            '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            '.txt': 'text/plain',
+            '.log': 'text/plain',
+            '.json': 'application/json',
+            '.xml': 'application/xml',
+            '.zip': 'application/zip',
+            '.csv': 'text/csv',
+            '.xls': 'application/vnd.ms-excel',
+            '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        }
+        return mime_types.get(extension, 'application/octet-stream')
     
     def close(self):
         """Close the HTTP session."""
