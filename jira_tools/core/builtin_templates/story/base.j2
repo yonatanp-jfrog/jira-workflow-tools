@@ -1,0 +1,28 @@
+{# description: Basic user story template #}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ story.name }}",
+    "description": "{{ story.description | default('**User Story**\n\nAs a [user type],\nI want [functionality],\nSo that [benefit].\n\n**Acceptance Criteria**\n\n- [ ] TBD\n\n**Technical Notes**\n\nTBD') }}",
+    "issuetype": {
+      "id": "{{ issue_types.story }}"
+    },
+    "priority": {
+      "id": "{{ priorities[story.priority] | default(priorities['4 - Normal']) }}"
+    }
+    {%- if team.id %},
+    "customfield_10129": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ]
+    {%- endif %}
+    {%- if story.parent %},
+    "parent": {
+      "key": "{{ story.parent }}"
+    }
+    {%- endif %}
+  }
+}

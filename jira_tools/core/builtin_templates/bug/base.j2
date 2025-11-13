@@ -1,0 +1,28 @@
+{# description: Basic bug template #}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ bug.name }}",
+    "description": "{{ bug.description | default('**Bug Summary**\n\nTBD\n\n**Steps to Reproduce**\n\n1. TBD\n\n**Expected Behavior**\n\nTBD\n\n**Actual Behavior**\n\nTBD\n\n**Environment**\n\n- OS: \n- Browser: \n- Version: ') }}",
+    "issuetype": {
+      "id": "{{ issue_types.bug }}"
+    },
+    "priority": {
+      "id": "{{ priorities[bug.priority] | default(priorities['3 - High']) }}"
+    }
+    {%- if team.id %},
+    "customfield_10129": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ]
+    {%- endif %}
+    {%- if bug.parent %},
+    "parent": {
+      "key": "{{ bug.parent }}"
+    }
+    {%- endif %}
+  }
+}

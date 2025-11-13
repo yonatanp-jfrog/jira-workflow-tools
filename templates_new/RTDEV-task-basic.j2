@@ -1,0 +1,43 @@
+{# 
+name: RTDEV-task-basic
+project: RTDEV
+issue_type: task
+team: optional
+description: Basic RTDEV task template for general work items and operational tasks
+defaults: Normal priority, soft commitment, basic structure
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Task Overview**\n\nThis task represents work that needs to be completed.\n\n**Objective**\n\nTBD - Define what needs to be accomplished\n\n**Approach**\n\n- [ ] Plan the work\n- [ ] Execute the task\n- [ ] Verify completion\n- [ ] Document results\n\n**Success Criteria**\n\nTBD - Define how to measure completion') }}",
+    "issuetype": {
+      "id": "{{ issue_types.task }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['4 - Normal']) }}"
+    }
+    {%- if team.id %},
+    "customfield_10129": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ]
+    {%- endif %}
+    {%- if issue.product_backlog %},
+    "customfield_10119": ["{{ issue.product_backlog }}"]
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+  }
+}

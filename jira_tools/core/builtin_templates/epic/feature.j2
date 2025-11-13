@@ -1,0 +1,48 @@
+{# description: Feature epic template with enhanced defaults for new features #}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ epic.name }}",
+    "description": "{{ epic.description | default('**Feature Overview**\n\nTBD\n\n**Acceptance Criteria**\n\n- [ ] TBD\n\n**Technical Notes**\n\nTBD') }}",
+    "issuetype": {
+      "id": "{{ issue_types.epic }}"
+    },
+    "priority": {
+      "id": "{{ priorities[epic.priority] | default(priorities['3 - High']) }}"
+    }
+    {%- if team.id %},
+    "customfield_10129": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ]
+    {%- endif %},
+    "customfield_10119": ["{{ epic.product_backlog | default('Q4-25-Backlog') }}"]
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %},
+    "customfield_10450": {
+      "id": "{{ commitment_levels[epic.commitment_level] | default(commitment_levels['Hard Commitment']) }}"
+    },
+    "customfield_10167": {
+      "id": "{{ areas[epic.area] | default(areas['Features & Innovation']) }}"
+    },
+    "customfield_10508": {
+      "id": "{{ commitment_reasons[epic.commitment_reason] | default(commitment_reasons['Roadmap']) }}"
+    }
+    {%- if epic.parent %},
+    "parent": {
+      "key": "{{ epic.parent }}"
+    }
+    {%- endif %}
+    {%- if epic.product_priority %},
+    "customfield_10327": {
+      "id": "{{ epic.product_priority }}"
+    }
+    {%- endif %}
+  }
+}

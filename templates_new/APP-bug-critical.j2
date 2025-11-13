@@ -1,0 +1,53 @@
+{# 
+name: APP-bug-critical
+project: APP
+issue_type: bug
+team: optional
+description: Critical APP bug reports for customer-facing issues requiring immediate attention
+defaults: Highest priority, hard commitment, customer commitment reason
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "🚨 {{ issue.title }}",
+    "description": "{{ issue.description | default('**Customer-Facing Bug Report**\n\n**Problem Description**\n\nTBD - Clearly describe the customer-facing issue\n\n**Customer Impact**\n\n- **Affected Customers:** TBD (number/percentage)\n- **Business Impact:** TBD (revenue, reputation, etc.)\n- **Severity Level:** TBD (Critical/High/Medium/Low)\n- **Workaround Available:** TBD (Yes/No - if yes, describe)\n\n**Reproduction Steps**\n\n1. TBD\n2. TBD\n3. TBD\n\n**Expected vs Actual Behavior**\n\n- **Expected:** TBD\n- **Actual:** TBD\n\n**Environment Information**\n\n- **Browser:** TBD\n- **OS:** TBD\n- **App Version:** TBD\n- **User Type:** TBD\n\n**Customer Communication**\n\n- **Customer Notifications:** TBD (who needs to be informed)\n- **Status Page Update:** TBD (if applicable)\n- **Support Ticket:** TBD (link if exists)\n\n**Resolution Plan**\n\n- [ ] Immediate triage and assessment\n- [ ] Root cause analysis\n- [ ] Fix implementation\n- [ ] Comprehensive testing\n- [ ] Customer validation\n- [ ] Post-incident review\n\n**Testing Requirements**\n\n- [ ] Reproduction verification\n- [ ] Fix validation\n- [ ] Regression testing\n- [ ] Customer acceptance testing') }}",
+    "issuetype": {
+      "id": "{{ issue_types.bug }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['1 - Highest']) }}"
+    },
+    "customfield_10129": [
+      {
+        "id": "{{ team.id | default('12980') }}"
+      }
+    ],
+    "customfield_10119": ["{{ issue.product_backlog | default('Critical-Bug-Backlog') }}"],
+    "customfield_10450": {
+      "id": "{{ commitment_levels[issue.commitment_level] | default(commitment_levels['Hard Commitment']) }}"
+    },
+    "customfield_10167": {
+      "id": "{{ areas[issue.area] | default(areas['Enablers & Tech Debt']) }}"
+    },
+    "customfield_10508": {
+      "id": "{{ commitment_reasons[issue.commitment_reason] | default(commitment_reasons['Customer Commitment']) }}"
+    }
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "customfield_10327": {
+      "id": "{{ product_priorities[issue.product_priority] }}"
+    }
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+  }
+}

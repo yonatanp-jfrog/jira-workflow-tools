@@ -1,0 +1,82 @@
+name: Feature Request
+description: Suggest a new feature or improvement for the Jira Workflow Tools
+title: "[FEATURE] "
+labels: ["enhancement", "team-request"]
+assignees: []
+body:
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Feature Category
+      description: What area does this feature relate to?
+      options:
+        - Templates (new templates or template improvements)
+        - CLI Commands (new commands or command improvements)
+        - Configuration (setup, private mode, etc.)
+        - Issue Creation (epic, story, task, bug creation)
+        - Team Workflow (collaboration, sharing, etc.)
+        - Documentation (guides, help, examples)
+        - Other
+    validations:
+      required: true
+      
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: Describe the feature you'd like to see
+      placeholder: |
+        Please describe:
+        1. What feature you want
+        2. How it would work
+        3. Why it would be useful for the team
+    validations:
+      required: true
+      
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe a specific scenario where this feature would be helpful
+      placeholder: |
+        Example scenario:
+        "As a developer on the RTDEV team, I want to..."
+        "Currently I have to... but with this feature I could..."
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to your workflow?
+      options:
+        - High (blocks current workflow)
+        - Medium (would significantly improve workflow)
+        - Low (nice to have)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, examples, or related information
+      placeholder: |
+        You can include:
+        - Example commands or templates
+        - Screenshots or mockups
+        - Related issues or discussions
+        - Alternative solutions you've considered
+    validations:
+      required: false
+      
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Willingness
+      description: Are you interested in helping implement this feature?
+      options:
+        - label: I'd be willing to help implement this feature
+        - label: I'd be willing to test this feature once implemented
+        - label: I'd be willing to help write documentation for this feature

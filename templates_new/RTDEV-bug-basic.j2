@@ -1,0 +1,53 @@
+{# 
+name: RTDEV-bug-basic
+project: RTDEV
+issue_type: bug
+team: optional
+description: Basic RTDEV bug template for issue tracking and resolution with security focus
+defaults: High priority, hard commitment, tech debt area, security reason
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "🐛 {{ issue.title }}",
+    "description": "{{ issue.description | default('**Bug Report**\n\n**Problem Description**\n\nTBD - Clearly describe the issue and its impact\n\n**Steps to Reproduce**\n\n1. TBD\n2. TBD\n3. TBD\n\n**Expected Behavior**\n\nTBD - What should happen\n\n**Actual Behavior**\n\nTBD - What actually happens\n\n**Impact Assessment**\n\n- **Severity:** TBD (Critical/High/Medium/Low)\n- **Affected Systems:** TBD\n- **User Impact:** TBD\n\n**Root Cause Analysis**\n\nTBD - To be filled during investigation\n\n**Fix Strategy**\n\n- [ ] Investigate root cause\n- [ ] Implement fix\n- [ ] Add regression tests\n- [ ] Verify fix in staging\n- [ ] Deploy to production\n\n**Testing Checklist**\n\n- [ ] Unit tests added/updated\n- [ ] Integration tests pass\n- [ ] Manual testing completed\n- [ ] Regression testing performed') }}",
+    "issuetype": {
+      "id": "{{ issue_types.bug }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['2 - High']) }}"
+    },
+    "customfield_10129": [
+      {
+        "id": "{{ team.id | default('10145') }}"
+      }
+    ],
+    "customfield_10119": ["{{ issue.product_backlog | default('Bug-Fix-Backlog') }}"],
+    "customfield_10450": {
+      "id": "{{ commitment_levels[issue.commitment_level] | default(commitment_levels['Hard Commitment']) }}"
+    },
+    "customfield_10167": {
+      "id": "{{ areas[issue.area] | default(areas['Enablers & Tech Debt']) }}"
+    },
+    "customfield_10508": {
+      "id": "{{ commitment_reasons[issue.commitment_reason] | default(commitment_reasons['Security']) }}"
+    }
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "customfield_10327": {
+      "id": "{{ product_priorities[issue.product_priority] }}"
+    }
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+  }
+}

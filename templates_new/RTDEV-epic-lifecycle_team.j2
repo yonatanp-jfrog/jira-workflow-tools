@@ -1,0 +1,53 @@
+{# 
+name: RTDEV-epic-lifecycle_team
+project: RTDEV
+issue_type: epic
+team: dev-artifactory-lifecycle
+description: RTDEV epics for the main dev-artifactory-lifecycle team with comprehensive defaults
+defaults: High priority, hard commitment, features & innovation area, roadmap commitment reason
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Epic Overview**\n\nThis epic delivers key functionality for the Artifactory Lifecycle Management platform.\n\n**Business Value**\n\nTBD - Define the business impact and customer value\n\n**Technical Approach**\n\n- [ ] Design review with architecture team\n- [ ] Implementation planning\n- [ ] Testing strategy\n- [ ] Documentation updates\n\n**Success Criteria**\n\n- [ ] Functional requirements met\n- [ ] Performance benchmarks achieved\n- [ ] Security review completed\n- [ ] Documentation updated\n\n**Dependencies**\n\nTBD - List any dependencies on other teams or systems') }}",
+    "issuetype": {
+      "id": "{{ issue_types.epic }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['3 - High']) }}"
+    },
+    "customfield_10129": [
+      {
+        "id": "{{ team.id | default('10145') }}"
+      }
+    ],
+    "customfield_10119": ["{{ issue.product_backlog | default('Q4-25-Backlog') }}"],
+    "customfield_10450": {
+      "id": "{{ commitment_levels[issue.commitment_level] | default(commitment_levels['Hard Commitment']) }}"
+    },
+    "customfield_10167": {
+      "id": "{{ areas[issue.area] | default(areas['Features & Innovation']) }}"
+    },
+    "customfield_10508": {
+      "id": "{{ commitment_reasons[issue.commitment_reason] | default(commitment_reasons['Roadmap']) }}"
+    }
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "customfield_10327": {
+      "id": "{{ product_priorities[issue.product_priority] }}"
+    }
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+  }
+}

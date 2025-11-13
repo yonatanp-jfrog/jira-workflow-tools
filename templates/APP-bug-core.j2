@@ -1,0 +1,28 @@
+{# 
+name: APP-bug-core
+project: APP
+issue_type: bug
+team: app-core
+description: Core APP bugs for customer-facing issues  
+defaults: APP project, bug type, app-core team, Normal priority
+#}
+{
+  "fields": {
+    "project": "APP",
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Problem Description**\\n\\n[Clear description of the customer-facing issue]\\n\\n**Steps to Reproduce**\\n1. [Step 1]\\n2. [Step 2]\\n3. [Step 3]\\n\\n**Expected vs Actual Behavior**\\n- **Expected:** [What should happen]\\n- **Actual:** [What actually happens]') }}",
+    "issue_type": "bug",
+    "team": "app-core",
+    "priority": "{{ issue.priority | default('Normal') }}",
+    "product_backlog": "{{ issue.product_backlog | default('Q4-25-Backlog') }}",
+    "commitment_level": "{{ issue.commitment_level | default('Hard Commitment') }}",
+    "area": "{{ issue.area | default('Enablers & Tech Debt') }}",
+    "commitment_reason": "{{ issue.commitment_reason | default('Customer Commitment') }}"
+    {%- if issue.parent %},
+    "parent": "{{ issue.parent }}"
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "product_priority": "{{ issue.product_priority }}"
+    {%- endif %}
+  }
+}

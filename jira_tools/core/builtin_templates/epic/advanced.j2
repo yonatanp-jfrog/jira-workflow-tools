@@ -1,0 +1,78 @@
+{#
+Advanced Epic Template with Full Field Support
+
+This template supports all legacy epic creation fields:
+- Commitment levels (Hard/Soft/KTLO) 
+- Areas (Features/Enablers/KTLO)
+- Product manager assignment
+- Product backlog classification  
+- Parent epic linking
+- Product priorities (P0-P4)
+- Team assignment
+- Commitment reasons
+
+Usage Context Variables:
+- epic.name: Epic name/summary (required)
+- epic.description: Epic description (optional, defaults to "TBD")
+- epic.priority: Priority level (optional, defaults to "4 - Normal")
+- epic.commitment_level: Commitment level (optional, defaults to "Soft Commitment")
+- epic.area: Work area (optional, defaults to "Features & Innovation")  
+- epic.product_manager: Product manager account ID (optional, defaults to current user)
+- epic.product_backlog: Product backlog (optional, defaults to "Q4-25-Backlog")
+- epic.parent: Parent issue key (optional)
+- epic.product_priority: Product priority (optional)
+- epic.team: Team name (optional, uses project default)
+- epic.commitment_reason: Commitment reason (optional, defaults to "Roadmap")
+- project: Project context with key and ID
+- team: Team context with ID and name
+- user: User context with account_id
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ epic.name }}",
+    "description": "{{ epic.description or 'TBD' }}",
+    "issuetype": {
+      "id": "{{ issue_types.epic }}"
+    },
+    "priority": {
+      "id": "{{ priorities[epic.priority or '4 - Normal'] }}"
+    },
+    {#- Team assignment -#}
+    "{{ field_ids.teams }}": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ],
+    {#- Area (required field) -#}
+    "{{ field_ids.area }}": {
+      "id": "{{ areas[epic.area or 'Features & Innovation'] }}"  
+    },
+    {#- Commitment reason -#}
+    "{{ field_ids.commitment_reason }}": {
+      "id": "{{ commitment_reasons[epic.commitment_reason or 'Roadmap'] }}"
+    }{% if epic.commitment_level %},
+    {#- Commitment level -#}
+    "{{ field_ids.commitment_level }}": {
+      "id": "{{ commitment_levels[epic.commitment_level] }}"
+    }{% endif %}{% if epic.product_manager or user.account_id %},
+    {#- Product manager -#}
+    "{{ field_ids.product_manager }}": {
+      "accountId": "{{ epic.product_manager or user.account_id }}"
+    }{% endif %}{% if epic.product_backlog %},
+    {#- Product backlog -#}
+    "{{ field_ids.product_backlog }}": [
+      "{{ epic.product_backlog or 'Q4-25-Backlog' }}"
+    ]{% endif %}{% if epic.parent %},
+    {#- Parent epic -#}
+    "parent": {
+      "key": "{{ epic.parent }}"
+    }{% endif %}{% if epic.product_priority %},
+    {#- Product priority -#}
+    "{{ field_ids.product_priority }}": {
+      "id": "{{ product_priorities[epic.product_priority] }}"
+    }{% endif %}
+  }
+}

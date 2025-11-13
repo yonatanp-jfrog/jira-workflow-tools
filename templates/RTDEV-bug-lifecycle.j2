@@ -1,0 +1,28 @@
+{# 
+name: RTDEV-bug-lifecycle
+project: RTDEV
+issue_type: bug
+team: dev-artifactory-lifecycle
+description: RTDEV bugs for Artifactory platform issues
+defaults: RTDEV project, bug type, lifecycle team, Normal priority
+#}
+{
+  "fields": {
+    "project": "RTDEV",
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Problem Description**\\n\\n[Clear description of the Artifactory platform issue]\\n\\n**Steps to Reproduce**\\n1. [Step 1]\\n2. [Step 2]\\n3. [Step 3]\\n\\n**Expected vs Actual Behavior**\\n- **Expected:** [What should happen]\\n- **Actual:** [What actually happens]') }}",
+    "issue_type": "bug",
+    "team": "dev-artifactory-lifecycle",
+    "priority": "{{ issue.priority | default('Normal') }}",
+    "product_backlog": "{{ issue.product_backlog | default('Q4-25-Backlog') }}",
+    "commitment_level": "{{ issue.commitment_level | default('Hard Commitment') }}",
+    "area": "{{ issue.area | default('Enablers & Tech Debt') }}",
+    "commitment_reason": "{{ issue.commitment_reason | default('Security') }}"
+    {%- if issue.parent %},
+    "parent": "{{ issue.parent }}"
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "product_priority": "{{ issue.product_priority }}"
+    {%- endif %}
+  }
+}

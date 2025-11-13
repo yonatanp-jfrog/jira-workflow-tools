@@ -1,0 +1,28 @@
+{# description: Basic task template #}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ task.name }}",
+    "description": "{{ task.description | default('**Task Description**\n\nTBD\n\n**Steps to Complete**\n\n1. TBD\n\n**Definition of Done**\n\n- [ ] TBD') }}",
+    "issuetype": {
+      "id": "{{ issue_types.task }}"
+    },
+    "priority": {
+      "id": "{{ priorities[task.priority] | default(priorities['4 - Normal']) }}"
+    }
+    {%- if team.id %},
+    "customfield_10129": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ]
+    {%- endif %}
+    {%- if task.parent %},
+    "parent": {
+      "key": "{{ task.parent }}"
+    }
+    {%- endif %}
+  }
+}

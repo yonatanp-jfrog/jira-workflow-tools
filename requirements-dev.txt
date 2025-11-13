@@ -1,0 +1,19 @@
+# Development Dependencies for Jira Workflow Tools
+
+# Include core dependencies
+-r requirements.txt
+
+# Testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Code formatting and linting
+black>=23.0.0
+flake8>=6.0.0
+
+# Type checking (optional)
+mypy>=1.5.0
+
+# Development utilities
+ipython>=8.0.0      # Better REPL for debugging
+pprint>=0.1         # Pretty printing for development

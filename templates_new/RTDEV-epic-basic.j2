@@ -1,0 +1,63 @@
+{# 
+name: RTDEV-epic-basic
+project: RTDEV
+issue_type: epic
+team: optional
+description: Basic RTDEV epic template - great starting point for most epics
+defaults: Normal priority, hard commitment, features & innovation area
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Epic Overview**\n\nThis is a basic RTDEV epic template. Customize as needed.\n\n**Objectives**\n\nTBD - Define what this epic will achieve\n\n**Implementation Plan**\n\n- [ ] Requirements analysis\n- [ ] Technical design\n- [ ] Implementation\n- [ ] Testing\n- [ ] Documentation\n\n**Success Criteria**\n\nTBD - Define how to measure success') }}",
+    "issuetype": {
+      "id": "{{ issue_types.epic }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['4 - Normal']) }}"
+    }
+    {%- if team.id %},
+    "customfield_10129": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ]
+    {%- endif %}
+    {%- if issue.product_backlog %},
+    "customfield_10119": ["{{ issue.product_backlog }}"]
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+    {%- if issue.commitment_level %},
+    "customfield_10450": {
+      "id": "{{ commitment_levels[issue.commitment_level] | default(commitment_levels['Soft Commitment']) }}"
+    }
+    {%- endif %}
+    {%- if issue.area %},
+    "customfield_10167": {
+      "id": "{{ areas[issue.area] | default(areas['Features & Innovation']) }}"
+    }
+    {%- endif %}
+    {%- if issue.commitment_reason %},
+    "customfield_10508": {
+      "id": "{{ commitment_reasons[issue.commitment_reason] | default(commitment_reasons['Roadmap']) }}"
+    }
+    {%- endif %}
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "customfield_10327": {
+      "id": "{{ product_priorities[issue.product_priority] }}"
+    }
+    {%- endif %}
+  }
+}

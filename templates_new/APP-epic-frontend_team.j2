@@ -1,0 +1,53 @@
+{# 
+name: APP-epic-frontend_team
+project: APP
+issue_type: epic
+team: frontend-team
+description: APP epics specifically for frontend/UI development with comprehensive UX requirements
+defaults: High priority, customer commitment, frontend-specific description
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "🎨 {{ issue.title }}",
+    "description": "{{ issue.description | default('**Frontend Epic - User Interface**\n\nThis epic focuses on user-facing interface improvements and functionality.\n\n**User Experience Goals**\n\nTBD - Define the UX improvements and user journey enhancements\n\n**UI/UX Requirements**\n\n- [ ] User research and requirements gathering\n- [ ] Wireframes and mockups\n- [ ] Design system compliance\n- [ ] Responsive design requirements\n- [ ] Accessibility compliance (WCAG 2.1)\n\n**Technical Implementation**\n\n- [ ] Component design and architecture\n- [ ] State management strategy\n- [ ] API integration requirements\n- [ ] Performance optimization\n- [ ] Browser compatibility testing\n\n**Quality Assurance**\n\n- [ ] Unit tests for components\n- [ ] Integration tests\n- [ ] Visual regression testing\n- [ ] Cross-browser testing\n- [ ] Mobile responsiveness testing\n- [ ] Accessibility testing\n\n**Browser Support**\n\n- [ ] Chrome (latest 2 versions)\n- [ ] Firefox (latest 2 versions)\n- [ ] Safari (latest 2 versions)\n- [ ] Edge (latest 2 versions)\n\n**Performance Targets**\n\n- **Load Time:** < 3 seconds\n- **Core Web Vitals:** All green\n- **Lighthouse Score:** > 90') }}",
+    "issuetype": {
+      "id": "{{ issue_types.epic }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['2 - High']) }}"
+    },
+    "customfield_10129": [
+      {
+        "id": "{{ team.id | default('12980') }}"
+      }
+    ],
+    "customfield_10119": ["{{ issue.product_backlog | default('Frontend-Backlog') }}"],
+    "customfield_10450": {
+      "id": "{{ commitment_levels[issue.commitment_level] | default(commitment_levels['Hard Commitment']) }}"
+    },
+    "customfield_10167": {
+      "id": "{{ areas[issue.area] | default(areas['Features & Innovation']) }}"
+    },
+    "customfield_10508": {
+      "id": "{{ commitment_reasons[issue.commitment_reason] | default(commitment_reasons['Customer Commitment']) }}"
+    }
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "customfield_10327": {
+      "id": "{{ product_priorities[issue.product_priority] }}"
+    }
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+  }
+}

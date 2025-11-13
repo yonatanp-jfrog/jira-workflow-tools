@@ -1,0 +1,38 @@
+{# 
+name: RTDEV-epic-lifecycle
+project: RTDEV
+issue_type: epic
+team: dev-artifactory-lifecycle
+description: RTDEV epics for Artifactory lifecycle features
+defaults: RTDEV project, epic type, lifecycle team, Normal priority, Yonatan Philip as PM
+#}
+{
+  "fields": {
+    "project": "RTDEV",
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Description**\\n\\n**Problem:** [What technical or platform problem are we solving?]\\n**Solution:** [High-level approach to solve the problem]\\n\\n**Requirements**\\n- [ ] [Technical requirement 1]\\n- [ ] [Technical requirement 2]\\n- [ ] [Performance requirement 1]\\n\\n**Scope**\\n**In Scope:**\\n- [What platform features will be delivered]\\n\\n**Out of Scope:**\\n- [What will not be delivered in this epic]\\n\\n**Definition of Done (DoD)**\\n- [ ] All requirements implemented and tested\\n- [ ] Code reviewed and approved\\n- [ ] Documentation updated\\n- [ ] Security review completed\\n- [ ] Performance requirements met') }}",
+    "issue_type": "epic",
+    "team": "dev-artifactory-lifecycle",
+    "priority": "{{ issue.priority | default('Normal') }}",
+    "product_backlog": "{{ issue.product_backlog | default('Q4-25-Backlog') }}",
+    "product_manager": "{{ user.account_id | default('yonatan.philip') }}",
+    "commitment_level": "{{ issue.commitment_level | default('Hard Commitment') }}",
+    "area": "{{ issue.area | default('Features & Innovation') }}",
+    "commitment_reason": "{{ issue.commitment_reason | default('Roadmap') }}"
+    {%- if issue.parent %},
+    "parent": "{{ issue.parent }}"
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "product_priority": "{{ issue.product_priority }}"
+    {%- endif %}
+    {%- if ux and ux.account_id %},
+    "ux_designer": "{{ ux.account_id }}"
+    {%- endif %}
+    {%- if tech_writer and tech_writer.account_id %},
+    "technical_writer": "{{ tech_writer.account_id }}"
+    {%- endif %}
+    {%- if architect and architect.account_id %},
+    "architect": "{{ architect.account_id }}"
+    {%- endif %}
+  }
+}

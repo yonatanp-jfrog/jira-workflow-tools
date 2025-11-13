@@ -1,0 +1,128 @@
+# Sample configuration data for testing
+# This file contains non-sensitive test data for unit tests
+
+test_configurations:
+  valid_config:
+    jira_base_url: "https://test.atlassian.net"
+    jira_auth_token: "test-token-12345"
+    user_account_id: "test-user-id-67890"
+    
+  rtdev_config:
+    project_key: "RTDEV"
+    project_id: "10129"
+    team_name: "dev-artifactory-lifecycle"
+    team_id: "10145"
+    
+  app_config:
+    project_key: "APP"
+    project_id: "10246"
+    team_name: "App Core"
+    team_id: "12980"
+
+test_responses:
+  successful_issue:
+    key: "TEST-123"
+    fields:
+      summary: "Test Epic for Template System"
+      description: "This is a test epic created for validating the template system"
+      status:
+        name: "Open"
+        id: "1"
+      priority:
+        name: "3 - High"
+        id: "10002"
+      issuetype:
+        name: "Epic"
+        id: "10000"
+      assignee:
+        accountId: "test-user-id"
+        displayName: "Test User"
+      created: "2024-01-15T10:30:00.000+0000"
+      updated: "2024-01-15T14:45:00.000+0000"
+      
+  create_issue_response:
+    key: "TEST-124"
+    id: "123456"
+    self: "https://test.atlassian.net/rest/api/2/issue/123456"
+    
+  user_info_response:
+    accountId: "test-user-id-67890"
+    displayName: "Test User"
+    emailAddress: "test.user@example.com"
+    active: true
+    timeZone: "America/New_York"
+
+template_test_data:
+  epic_context:
+    epic:
+      name: "Test Epic for Templates"
+      description: "A test epic to validate template rendering"
+      priority: "3 - High"
+      commitment_level: "Hard Commitment"
+      area: "Features & Innovation"
+      commitment_reason: "Roadmap"
+      product_backlog: "Q4-25-Backlog"
+      
+    project:
+      key: "TEST"
+      id: "12345"
+      
+    team:
+      name: "Test Team"
+      id: "67890"
+      
+    user:
+      account_id: "test-user-account-id"
+      
+    priorities:
+      "1 - Blocker": "10000"
+      "2 - Critical": "10001"
+      "3 - High": "10002"
+      "4 - Normal": "10003"
+      "5 - Minor": "10004"
+      
+    issue_types:
+      epic: "10000"
+      story: "10001"
+      task: "10003"
+      bug: "10004"
+      
+    commitment_levels:
+      "Hard Commitment": "11277"
+      "Soft Commitment": "11278"
+      "KTLO": "11279"
+      
+    areas:
+      "Features & Innovation": "10312"
+      "Enablers & Tech Debt": "10311"
+      "KTLO": "10313"
+      
+    commitment_reasons:
+      "Roadmap": "11490"
+      "Customer Commitment": "11491"
+      "Security": "11492"
+
+error_responses:
+  not_found:
+    status_code: 404
+    errorMessages:
+      - "Issue does not exist or you do not have permission to see it."
+      
+  authentication_failed:
+    status_code: 401
+    errorMessages:
+      - "You are not authenticated. Authentication required to perform this operation."
+      
+  permission_denied:
+    status_code: 403
+    errorMessages:
+      - "You do not have permission to perform this operation."
+      
+  validation_error:
+    status_code: 400
+    errorMessages:
+      - "Summary is required."
+      - "Project is required."
+    errors:
+      summary: "You must specify a summary of the issue."
+      project: "You must specify a project for this issue."

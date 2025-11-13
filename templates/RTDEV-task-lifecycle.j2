@@ -1,0 +1,30 @@
+{# 
+name: RTDEV-task-lifecycle
+project: RTDEV
+issue_type: task
+team: dev-artifactory-lifecycle
+description: RTDEV tasks for operational and development work
+defaults: RTDEV project, task type, lifecycle team, Normal priority
+#}
+{
+  "fields": {
+    "project": "RTDEV",
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Task Overview**\\n\\n[Description of work to be completed]\\n\\n**Approach**\\n- [ ] [Step 1]\\n- [ ] [Step 2]\\n- [ ] [Step 3]\\n\\n**Deliverables**\\n[Expected outputs or results]\\n\\n**Success Criteria**\\n[How to verify task completion]') }}",
+    "issue_type": "task", 
+    "team": "dev-artifactory-lifecycle",
+    "priority": "{{ issue.priority | default('Normal') }}",
+    "product_backlog": "{{ issue.product_backlog | default('Q4-25-Backlog') }}",
+    "commitment_level": "{{ issue.commitment_level | default('Soft Commitment') }}",
+    "area": "{{ issue.area | default('Enablers & Tech Debt') }}"
+    {%- if issue.commitment_reason %},
+    "commitment_reason": "{{ issue.commitment_reason }}"
+    {%- endif %}
+    {%- if issue.parent %},
+    "parent": "{{ issue.parent }}"
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "product_priority": "{{ issue.product_priority }}"
+    {%- endif %}
+  }
+}

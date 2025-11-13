@@ -1,0 +1,53 @@
+{# 
+name: APP-epic-core_team
+project: APP
+issue_type: epic
+team: app-core
+description: APP epics for the core application team with customer-focused development
+defaults: High priority, hard commitment, customer commitment reason
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**Customer-Facing Epic**\n\nThis epic delivers important functionality for application users.\n\n**Customer Value**\n\nTBD - Define the value this epic provides to customers\n\n**User Experience Impact**\n\nTBD - How will this improve the user experience?\n\n**Feature Requirements**\n\n- [ ] User story analysis\n- [ ] UI/UX design review\n- [ ] Technical design\n- [ ] Implementation plan\n- [ ] Testing strategy\n\n**Acceptance Criteria**\n\n- [ ] Functional requirements met\n- [ ] UI/UX review passed\n- [ ] User acceptance testing completed\n- [ ] Performance requirements met\n- [ ] Accessibility standards met\n\n**Release Planning**\n\n- **Target Release:** TBD\n- **Feature Flag:** TBD (if applicable)\n- **Rollout Strategy:** TBD\n\n**Dependencies**\n\nTBD - Any dependencies on other teams, services, or external systems') }}",
+    "issuetype": {
+      "id": "{{ issue_types.epic }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['3 - High']) }}"
+    },
+    "customfield_10129": [
+      {
+        "id": "{{ team.id | default('12980') }}"
+      }
+    ],
+    "customfield_10119": ["{{ issue.product_backlog | default('Q4-25-App-Backlog') }}"],
+    "customfield_10450": {
+      "id": "{{ commitment_levels[issue.commitment_level] | default(commitment_levels['Hard Commitment']) }}"
+    },
+    "customfield_10167": {
+      "id": "{{ areas[issue.area] | default(areas['Features & Innovation']) }}"
+    },
+    "customfield_10508": {
+      "id": "{{ commitment_reasons[issue.commitment_reason] | default(commitment_reasons['Customer Commitment']) }}"
+    }
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+    {%- if issue.product_priority %},
+    "customfield_10327": {
+      "id": "{{ product_priorities[issue.product_priority] }}"
+    }
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+  }
+}

@@ -1,0 +1,74 @@
+name: Team Support Request
+description: Get help with setup, configuration, or usage issues
+title: "[SUPPORT] "
+labels: ["team-support", "help-wanted"]
+assignees: []
+body:
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What type of help do you need?
+      options:
+        - Setup/Installation
+        - Configuration Issues
+        - Template Problems
+        - Epic Creation Issues
+        - Private Mode Help
+        - Template Customization
+        - Connection Issues
+        - Other
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe your issue or question in detail
+      placeholder: |
+        Please provide:
+        1. What you were trying to do
+        2. What happened instead
+        3. Any error messages you received
+        4. Steps to reproduce (if applicable)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Information
+      description: Help us understand your setup
+      value: |
+        - OS: 
+        - Python version: 
+        - Configuration mode: (private/environment)
+        - Jira project: (RTDEV/APP/other)
+        - Template used: 
+      render: markdown
+    validations:
+      required: true
+      
+  - type: textarea
+    id: config-output
+    attributes:
+      label: Configuration Test Output
+      description: Run `python3 -m jira_tools test-config` and paste the output
+      placeholder: Paste the output from test-config command here...
+      render: shell
+    validations:
+      required: false
+      
+  - type: checkboxes
+    id: troubleshooting
+    attributes:
+      label: Troubleshooting Steps Tried
+      description: Check all that apply
+      options:
+        - label: Checked TEAM_SETUP.md documentation
+        - label: Verified .env file configuration
+        - label: Tested with `python3 -m jira_tools test-config`
+        - label: Validated templates if using custom ones
+        - label: Checked for typos in commands
+        - label: Tried with different project/template combinations

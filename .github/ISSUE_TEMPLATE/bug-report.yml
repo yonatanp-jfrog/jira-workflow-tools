@@ -1,0 +1,100 @@
+name: Bug Report
+description: Report a bug or issue with the Jira Workflow Tools
+title: "[BUG] "
+labels: ["bug", "needs-investigation"]
+assignees: []
+body:
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear description of what the bug is
+      placeholder: |
+        Describe what happened that shouldn't have happened.
+        Include any error messages you received.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What should have happened instead?
+      placeholder: Describe what you expected to happen...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the bug
+      placeholder: |
+        1. Run command: `python3 -m jira_tools ...`
+        2. With configuration: ...
+        3. Using template: ...
+        4. See error: ...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Information about your environment
+      value: |
+        - OS: 
+        - Python version: 
+        - Configuration mode: (private/environment)
+        - Jira project: (RTDEV/APP/other)
+        - Template used (if applicable): 
+        - Command that failed: 
+      render: markdown
+    validations:
+      required: true
+      
+  - type: textarea
+    id: error-output
+    attributes:
+      label: Error Output
+      description: Full error message or command output
+      placeholder: Paste the complete error message or command output here...
+      render: shell
+    validations:
+      required: false
+      
+  - type: textarea
+    id: config-test
+    attributes:
+      label: Configuration Test
+      description: Output from `python3 -m jira_tools test-config`
+      placeholder: Paste the output from test-config command here...
+      render: shell
+    validations:
+      required: false
+      
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How often does this occur?
+      options:
+        - Always (every time)
+        - Usually (most of the time)
+        - Sometimes (inconsistent)
+        - Rarely (hard to reproduce)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem
+      placeholder: |
+        Add any other context about the problem here:
+        - When did this start happening?
+        - Does it happen with specific templates only?
+        - Any recent changes to your setup?
+        - Screenshots if applicable
+    validations:
+      required: false

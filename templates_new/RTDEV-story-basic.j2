@@ -1,0 +1,53 @@
+{# 
+name: RTDEV-story-basic
+project: RTDEV
+issue_type: story
+team: optional
+description: Basic RTDEV user story template with comprehensive user story structure
+defaults: Normal priority, soft commitment, user-focused
+#}
+{
+  "fields": {
+    "project": {
+      "id": "{{ project.id }}"
+    },
+    "summary": "{{ issue.title }}",
+    "description": "{{ issue.description | default('**User Story**\n\n**As a** [type of user]\n**I want** [goal/functionality]\n**So that** [benefit/value]\n\n**Acceptance Criteria**\n\n- [ ] Given [context], when [action], then [outcome]\n- [ ] Given [context], when [action], then [outcome]\n- [ ] Given [context], when [action], then [outcome]\n\n**Technical Requirements**\n\n- [ ] Implementation approach defined\n- [ ] Dependencies identified\n- [ ] Testing strategy outlined\n\n**Definition of Done**\n\n- [ ] All acceptance criteria met\n- [ ] Code review completed\n- [ ] Tests written and passing\n- [ ] Documentation updated') }}",
+    "issuetype": {
+      "id": "{{ issue_types.story }}"
+    },
+    "priority": {
+      "id": "{{ priorities[issue.priority] | default(priorities['4 - Normal']) }}"
+    }
+    {%- if team.id %},
+    "customfield_10129": [
+      {
+        "id": "{{ team.id }}"
+      }
+    ]
+    {%- endif %}
+    {%- if issue.product_backlog %},
+    "customfield_10119": ["{{ issue.product_backlog }}"]
+    {%- endif %}
+    {%- if user.account_id %},
+    "customfield_10044": {
+      "accountId": "{{ user.account_id }}"
+    }
+    {%- endif %}
+    {%- if issue.commitment_level %},
+    "customfield_10450": {
+      "id": "{{ commitment_levels[issue.commitment_level] | default(commitment_levels['Soft Commitment']) }}"
+    }
+    {%- endif %}
+    {%- if issue.area %},
+    "customfield_10167": {
+      "id": "{{ areas[issue.area] | default(areas['Features & Innovation']) }}"
+    }
+    {%- endif %}
+    {%- if issue.parent %},
+    "parent": {
+      "key": "{{ issue.parent }}"
+    }
+    {%- endif %}
+  }
+}
