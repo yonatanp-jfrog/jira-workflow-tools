@@ -20,6 +20,15 @@ import requests
 from config import config
 from jira_tools.core.formatters import jira_formatter
 
+# Rich library for enhanced CLI
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+from rich.text import Text
+from rich import filesize
+
+console = Console()
+
 
 class StagedEpicCreator:
     """Creates and manages staged epics with two-phase workflow."""
@@ -221,10 +230,15 @@ class StagedEpicCreator:
         return "\n".join(md_lines)
     
     def list_staged_epics(self) -> list:
-        """List all staged epics."""
+        """List all staged epics with enhanced file information."""
         staged_files = []
         for file_path in self.staged_folder.glob("*.md"):
             try:
+                # Get file stats
+                stat = file_path.stat()
+                file_size = stat.st_size
+                modified_time = datetime.fromtimestamp(stat.st_mtime)
+                
                 metadata = self._parse_staged_epic(file_path)
                 staged_files.append({
                     'file': str(file_path),
@@ -232,13 +246,213 @@ class StagedEpicCreator:
                     'project': metadata.get('project', 'Unknown'),
                     'epic_name': metadata.get('epic_name', 'Unknown'),
                     'status': metadata.get('status', 'staged'),
-                    'created_date': metadata.get('created_date', 'Unknown')
+                    'created_date': metadata.get('created_date', 'Unknown'),
+                    'file_size': file_size,
+                    'modified_time': modified_time,
+                    'team': metadata.get('team', 'Unknown'),
+                    'priority': metadata.get('priority', 'Unknown')
                 })
             except Exception as e:
                 # Skip files that can't be parsed
                 continue
         
-        return sorted(staged_files, key=lambda x: x['created_date'], reverse=True)
+        return sorted(staged_files, key=lambda x: x['modified_time'], reverse=True)
+    
+    def display_staged_epics_rich(self):
+        """Display staged epics using Rich formatting."""
+        staged_files = self.list_staged_epics()
+        archived_files = self._get_archived_files()
+        
+        if not staged_files and not archived_files:
+            console.print("📭 No staged epics found.")
+            console.print("💡 Create one with: python3 staged_epic_creator.py stage RTDEV \"My Epic\"")
+            return
+        
+        # Active staged files
+        if staged_files:
+            console.print("\n📝 Active Staged Epics", style="bold blue")
+            table = Table(show_header=True, header_style="bold magenta")
+            table.add_column("Project", style="cyan", width=8)
+            table.add_column("Epic Name", style="green", max_width=30)
+            table.add_column("Team", style="yellow", width=15)
+            table.add_column("Priority", style="red", width=10)
+            table.add_column("Size", style="blue", width=8)
+            table.add_column("Modified", style="magenta", width=12)
+            
+            for epic in staged_files:
+                # Format size nicely
+                size_str = filesize.decimal(epic['file_size'])
+                
+                # Format time nicely
+                time_str = epic['modified_time'].strftime('%m-%d %H:%M')
+                
+                # Truncate long epic names
+                epic_name = epic['epic_name']
+                if len(epic_name) > 27:
+                    epic_name = epic_name[:24] + "..."
+                
+                # Color-code priority
+                priority = epic.get('priority', 'Unknown')
+                if 'High' in priority or '1' in priority or '2' in priority:
+                    priority_style = "bold red"
+                elif 'Normal' in priority or '4' in priority:
+                    priority_style = "yellow"
+                else:
+                    priority_style = "green"
+                
+                table.add_row(
+                    epic['project'],
+                    epic_name,
+                    epic.get('team', 'Unknown')[:12] + ("..." if len(epic.get('team', '')) > 12 else ""),
+                    Text(priority, style=priority_style),
+                    size_str,
+                    time_str
+                )
+            
+            console.print(table)
+            console.print(f"📁 Location: {self.staged_folder}")
+        
+        # Archived files summary
+        if archived_files:
+            console.print(f"\n📦 Archived Epics: {len(archived_files)} files")
+            total_size = sum(f['file_size'] for f in archived_files)
+            console.print(f"📊 Total archived size: {filesize.decimal(total_size)}")
+            
+        return staged_files
+    
+    def _get_archived_files(self) -> list:
+        """Get information about archived files."""
+        archived_folder = self.staged_folder / "archived"
+        if not archived_folder.exists():
+            return []
+        
+        archived_files = []
+        for file_path in archived_folder.glob("*.md"):
+            try:
+                stat = file_path.stat()
+                archived_files.append({
+                    'filename': file_path.name,
+                    'file_size': stat.st_size,
+                    'modified_time': datetime.fromtimestamp(stat.st_mtime)
+                })
+            except Exception:
+                continue
+                
+        return archived_files
+    
+    def clean_old_files(self, days_old: int = 30, archived_only: bool = True) -> Dict[str, int]:
+        """Clean up old files from staging area."""
+        from datetime import timedelta
+        
+        cutoff_date = datetime.now() - timedelta(days=days_old)
+        removed_counts = {'staged': 0, 'archived': 0}
+        
+        # Clean archived files (default behavior)
+        archived_folder = self.staged_folder / "archived"
+        if archived_folder.exists():
+            for file_path in archived_folder.glob("*.md"):
+                try:
+                    if datetime.fromtimestamp(file_path.stat().st_mtime) < cutoff_date:
+                        file_path.unlink()
+                        removed_counts['archived'] += 1
+                except Exception:
+                    continue
+        
+        # Clean staged files only if explicitly requested
+        if not archived_only:
+            for file_path in self.staged_folder.glob("*.md"):
+                try:
+                    if datetime.fromtimestamp(file_path.stat().st_mtime) < cutoff_date:
+                        file_path.unlink()
+                        removed_counts['staged'] += 1
+                except Exception:
+                    continue
+                    
+        return removed_counts
+    
+    def remove_staged_file(self, filename: str) -> bool:
+        """Remove a specific staged file."""
+        # Try exact match first
+        file_path = self.staged_folder / filename
+        if file_path.exists():
+            file_path.unlink()
+            return True
+            
+        # Try with .md extension
+        if not filename.endswith('.md'):
+            file_path = self.staged_folder / f"{filename}.md"
+            if file_path.exists():
+                file_path.unlink()
+                return True
+                
+        return False
+    
+    def get_staging_status(self) -> Dict[str, Any]:
+        """Get comprehensive staging area status."""
+        staged_files = self.list_staged_epics()
+        archived_files = self._get_archived_files()
+        
+        # Calculate statistics
+        total_staged_size = sum(f['file_size'] for f in staged_files)
+        total_archived_size = sum(f['file_size'] for f in archived_files)
+        
+        # Count by project
+        project_counts = {}
+        for epic in staged_files:
+            project = epic['project']
+            project_counts[project] = project_counts.get(project, 0) + 1
+        
+        # Find oldest file
+        oldest_staged = None
+        if staged_files:
+            oldest_staged = min(staged_files, key=lambda x: x['modified_time'])
+            
+        return {
+            'staged_count': len(staged_files),
+            'archived_count': len(archived_files),
+            'total_staged_size': total_staged_size,
+            'total_archived_size': total_archived_size,
+            'project_counts': project_counts,
+            'oldest_staged': oldest_staged,
+            'staging_dir': str(self.staged_folder),
+            'archived_dir': str(self.staged_folder / "archived")
+        }
+    
+    def display_status_rich(self):
+        """Display staging status with Rich formatting."""
+        status = self.get_staging_status()
+        
+        # Main status panel
+        status_text = f"""📁 Staging Directory: {status['staging_dir']}
+📦 Archived Directory: {status['archived_dir']}
+
+📊 File Counts:
+   • Active Staged: {status['staged_count']} files
+   • Archived: {status['archived_count']} files
+
+💾 Storage Usage:
+   • Staged Files: {filesize.decimal(status['total_staged_size'])}
+   • Archived Files: {filesize.decimal(status['total_archived_size'])}
+   • Total: {filesize.decimal(status['total_staged_size'] + status['total_archived_size'])}"""
+        
+        if status['project_counts']:
+            status_text += "\n\n📋 By Project:\n"
+            for project, count in sorted(status['project_counts'].items()):
+                status_text += f"   • {project}: {count} epics\n"
+                
+        if status['oldest_staged']:
+            oldest = status['oldest_staged']
+            age_days = (datetime.now() - oldest['modified_time']).days
+            status_text += f"\n⏰ Oldest Staged: {oldest['filename']} ({age_days} days old)"
+        
+        panel = Panel(status_text, title="📂 Staging Area Status", border_style="blue")
+        console.print(panel)
+        
+        # Recommendations
+        if status['archived_count'] > 10:
+            console.print("💡 Consider cleaning old archived files: python3 staged_epic_creator.py clean")
+        if status['oldest_staged'] and (datetime.now() - status['oldest_staged']['modified_time']).days > 7:
+            console.print("⚠️  You have staged files older than 7 days - consider submitting or removing them")
     
     def _parse_staged_epic(self, file_path: Path) -> Dict[str, Any]:
         """Parse metadata from a staged epic file."""
@@ -743,30 +957,77 @@ def submit(staged_file: str, dry_run: bool):
 
 @cli.command()
 def list():
-    """List all staged epics."""
+    """List all staged epics with enhanced formatting."""
     
     creator = StagedEpicCreator()
-    staged_epics = creator.list_staged_epics()
+    creator.display_staged_epics_rich()
+
+
+@cli.command()
+@click.option('--days', default=30, help='Remove files older than N days (default: 30)')
+@click.option('--archived-only/--include-staged', default=True, help='Clean only archived files (default) or include staged files')
+@click.option('--force', is_flag=True, help='Skip confirmation prompt')
+def clean(days: int, archived_only: bool, force: bool):
+    """Clean up old staged and archived files."""
     
-    if not staged_epics:
-        click.echo("📭 No staged epics found.")
-        return
+    creator = StagedEpicCreator()
     
-    click.echo(f"\n📋 Staged Epics ({len(staged_epics)} found):")
-    click.echo("=" * 80)
-    
-    for epic in staged_epics:
-        status_emoji = {
-            'staged': '📝',
-            'reviewed': '👀', 
-            'approved': '✅',
-            'submitted': '🚀'
-        }.get(epic['status'], '❓')
+    try:
+        if not force:
+            area = "archived files" if archived_only else "staged and archived files"
+            if not click.confirm(f"Remove {area} older than {days} days?"):
+                console.print("❌ Cleanup cancelled")
+                return
         
-        click.echo(f"{status_emoji} [{epic['project']}] {epic['epic_name']}")
-        click.echo(f"   📁 {epic['filename']}")
-        click.echo(f"   📅 {epic['created_date'][:10]} | Status: {epic['status']}")
-        click.echo()
+        removed_counts = creator.clean_old_files(days, archived_only)
+        
+        if removed_counts['archived'] > 0 or removed_counts['staged'] > 0:
+            console.print("✅ Cleanup completed:")
+            if removed_counts['archived'] > 0:
+                console.print(f"   📦 Removed {removed_counts['archived']} archived files")
+            if removed_counts['staged'] > 0:
+                console.print(f"   📝 Removed {removed_counts['staged']} staged files")
+        else:
+            console.print("💡 No old files found to remove")
+            
+    except Exception as e:
+        console.print(f"❌ Error during cleanup: {e}")
+        raise click.Abort()
+
+
+@cli.command()
+@click.argument('filename')
+@click.option('--force', is_flag=True, help='Skip confirmation prompt')
+def remove(filename: str, force: bool):
+    """Remove a specific staged file."""
+    
+    creator = StagedEpicCreator()
+    
+    try:
+        if not force:
+            if not click.confirm(f"Remove staged file '{filename}'?"):
+                console.print("❌ Remove cancelled")
+                return
+        
+        success = creator.remove_staged_file(filename)
+        
+        if success:
+            console.print(f"✅ Removed {filename}")
+        else:
+            console.print(f"❌ File '{filename}' not found")
+            console.print("💡 Use 'python3 staged_epic_creator.py list' to see available files")
+            
+    except Exception as e:
+        console.print(f"❌ Error removing file: {e}")
+        raise click.Abort()
+
+
+@cli.command()
+def status():
+    """Show staging area status and statistics."""
+    
+    creator = StagedEpicCreator()
+    creator.display_status_rich()
 
 
 if __name__ == '__main__':

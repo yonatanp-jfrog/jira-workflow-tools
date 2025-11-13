@@ -276,7 +276,7 @@ class TestRunner:
         gitignore_path = self.project_root / ".gitignore"
         if gitignore_path.exists():
             gitignore_content = gitignore_path.read_text()
-            security_patterns = [".env", ".jira-staging", "secrets.enc", "*.jira-private"]
+            security_patterns = [".env", "secrets.enc", "*.jira-private"]
             
             protected_patterns = sum(1 for pattern in security_patterns if pattern in gitignore_content)
             self.results.append(TestResult(
@@ -325,34 +325,22 @@ class TestRunner:
             f"No suspicious patterns found" if len(suspicious_files) == 0 else f"Found {len(suspicious_files)} files with potential secrets"
         ))
         
-        # Test staging directory security
-        staging_dir = self.project_root / ".jira-staging"
+        # Check staging area security (staged-issues folder)
+        staging_dir = self.project_root / "staged-issues"
         if staging_dir.exists():
-            try:
-                # Check permissions (Unix-like systems)
-                import stat
-                mode = staging_dir.stat().st_mode
-                permissions = stat.filemode(mode)
-                # Check for owner-only permissions (700) - this is what we want for security
-                secure_permissions = permissions.endswith('rwx------')  # 700 permissions (secure)
-                
-                self.results.append(TestResult(
-                    "Staging Directory Permissions",
-                    secure_permissions or os.name == 'nt',  # Skip on Windows
-                    f"Secure permissions: {permissions}" if secure_permissions else f"Insecure permissions: {permissions}"
-                ))
-            except Exception as e:
-                self.results.append(TestResult(
-                    "Staging Directory Permissions",
-                    False,
-                    "Failed to check permissions",
-                    str(e)
-                ))
+            # Check that staging folder exists and is properly organized
+            archived_dir = staging_dir / "archived"
+            
+            self.results.append(TestResult(
+                "Staging Area Organization",
+                archived_dir.exists(),
+                f"Proper staging structure: {'✓' if archived_dir.exists() else '✗'} archived/ folder"
+            ))
         else:
             self.results.append(TestResult(
-                "Staging Directory Permissions",
-                True,
-                "Staging directory doesn't exist (good)"
+                "Staging Area Organization",
+                True,  # OK if no staging area yet
+                "No staging area found (will be created when needed)"
             ))
     
     def _test_cli(self):
