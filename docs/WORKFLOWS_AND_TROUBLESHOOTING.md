@@ -437,11 +437,14 @@ python3 -m jira_tools private backup         # Create backup
 python3 -m jira_tools epic "My Epic" --dry-run  # Preview before creation
 python3 -m jira_tools epic --interactive        # Interactive creation
 
-# Legacy staging (may need compatibility updates):
+# Enhanced staging workflow (fully supported):
 python3 create_staged_epic.py               # Interactive staging (works)
-python3 staged_epic_creator.py --help       # Staging help (may have issues)
-python3 staged_epic_creator.py stage        # Create staged epic (may have issues)
-python3 staged_epic_creator.py submit       # Submit to Jira (may have issues)
+python3 staged_epic_creator.py --help       # Staging help (enhanced with Rich CLI)
+python3 staged_epic_creator.py list         # Beautiful list with file stats ✨
+python3 staged_epic_creator.py status       # Comprehensive status dashboard ✨
+python3 staged_epic_creator.py clean        # Smart cleanup with confirmation ✨
+python3 staged_epic_creator.py stage        # Create staged epic (enhanced)
+python3 staged_epic_creator.py submit       # Submit to Jira (with archival)
 ```
 
 ### **Epic Refresh**
@@ -472,6 +475,37 @@ python3 epic_refresher.py --issue KEY       # Refresh specific epic
 
 ### **Q: What if I need features not in the modern system?**
 **A:** Create a GitHub issue with your request. We prioritize missing functionality from legacy scripts.
+
+### **Q: How do I manage my staging area?**
+**A:** Use the enhanced staging commands:
+```bash
+# Get beautiful overview of staging area
+python3 staged_epic_creator.py status
+
+# See all staged epics with stats
+python3 staged_epic_creator.py list
+
+# Clean up old archived files
+python3 staged_epic_creator.py clean --days 30
+
+# Remove a specific staged file
+python3 staged_epic_creator.py remove "filename.md"
+```
+
+### **Q: My staging area is getting cluttered. How do I clean it up?**
+**A:** The staging system has smart cleanup:
+- **Automatic archival**: Submitted epics move to `staged-issues/archived/` 
+- **Manual cleanup**: `python3 staged_epic_creator.py clean --days 30`
+- **Safe defaults**: Only cleans archived files unless `--include-staged` is used
+- **Interactive confirmations**: Prevents accidental deletions
+
+### **Q: Can I see storage usage and statistics?**
+**A:** Yes! Use `python3 staged_epic_creator.py status` for:
+- File counts (active vs archived)
+- Storage usage with human-readable sizes
+- Project breakdown and team statistics  
+- Age tracking and smart recommendations
+- Beautiful Rich-formatted dashboard
 
 ---
 

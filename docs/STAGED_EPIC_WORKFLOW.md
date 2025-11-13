@@ -86,10 +86,19 @@ python3 staged_epic_creator.py submit RTDEV_20250930_My_Epic.md
 #### Management Commands
 
 ```bash
-# List all staged epics
+# List all staged epics (enhanced with Rich formatting)
 python3 staged_epic_creator.py list
 
-# Get help
+# Show comprehensive staging area status
+python3 staged_epic_creator.py status
+
+# Clean up old archived files (30+ days)
+python3 staged_epic_creator.py clean --days 30
+
+# Remove a specific staged file
+python3 staged_epic_creator.py remove "filename.md"
+
+# Get help for all commands
 python3 staged_epic_creator.py --help
 ```
 
@@ -193,17 +202,23 @@ python3 staged_epic_creator.py submit "RTDEV: User Authentication Epic.md"
 # 1. Create initial staged epic
 python3 staged_epic_creator.py stage APP "Performance Improvements"
 
-# 2. List staged epics to track progress
+# 2. Check staging area status with beautiful dashboard
+python3 staged_epic_creator.py status
+
+# 3. List staged epics to track progress (enhanced with Rich formatting)
 python3 staged_epic_creator.py list
 
-# 3. Edit and refine over multiple sessions
+# 4. Edit and refine over multiple sessions
 # (Edit the markdown file with detailed requirements)
 
-# 4. Dry run to preview before submission
+# 5. Dry run to preview before submission
 python3 staged_epic_creator.py submit "APP: Performance Improvements.md" --dry-run
 
-# 5. Submit when satisfied
+# 6. Submit when satisfied
 python3 staged_epic_creator.py submit "APP: Performance Improvements.md"
+
+# 7. Clean up old archived files periodically
+python3 staged_epic_creator.py clean --days 30
 ```
 
 ## 📊 Epic Status Tracking
@@ -221,6 +236,51 @@ Update status by editing the YAML config:
 staging_info:
   status: "reviewed"  # Change this value
 ```
+
+## 🎛️ Enhanced Staging Management
+
+### Rich CLI Interface
+
+The staging system now includes a beautiful, modern CLI with Rich formatting:
+
+```bash
+# 📊 Comprehensive status dashboard
+python3 staged_epic_creator.py status
+# Shows: file counts, storage usage, project breakdown, oldest files
+
+# 📝 Enhanced list with color-coded tables
+python3 staged_epic_creator.py list  
+# Shows: project, epic name, team, priority, file size, modification time
+
+# 🧹 Smart cleanup with confirmation
+python3 staged_epic_creator.py clean --days 30
+# Removes archived files older than 30 days (default: archived only)
+
+# 🗑️ Remove specific files
+python3 staged_epic_creator.py remove "RTDEV: My Epic.md"
+# Interactive confirmation for safety
+```
+
+### Management Features
+
+**Status Dashboard:**
+- 📊 File counts (active staged vs archived)
+- 💾 Storage usage with human-readable sizes  
+- 📋 Project breakdown and statistics
+- ⏰ Age tracking and recommendations
+- 🎨 Beautiful panels and formatting
+
+**Smart Cleanup:**
+- 🛡️ Safe defaults (archived-only by default)
+- ⏱️ Configurable age thresholds  
+- 🤔 Interactive confirmations
+- 📊 Cleanup reports and statistics
+
+**Enhanced Visibility:**
+- 🎨 Color-coded priority levels
+- 📅 Human-friendly timestamps
+- 📏 File size information
+- 🏷️ Team and project organization
 
 ## 🎨 Customization & Editing
 
