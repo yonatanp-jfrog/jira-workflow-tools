@@ -16,7 +16,7 @@ Usage:
     python -m jira_tools epic create "Epic Name"  # Create epic
     python -m jira_tools viewer PROJ-123    # View ticket
 
-For team setup help, see TEAM_SETUP.md
+For setup help, see README.md
 """
 
 __version__ = "2.0.0-team"

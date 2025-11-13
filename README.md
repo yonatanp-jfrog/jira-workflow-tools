@@ -126,6 +126,31 @@ python3 -m jira_tools test-config
 
 ---
 
+## 🏗️ **Project Structure**
+
+```
+jira-workflow-tools/
+├── jira_tools/                  # 📦 Main package
+│   ├── core/                    # 🏗️ Core functionality
+│   │   ├── config.py           # ⚙️ Modern config management
+│   │   ├── client.py           # 🌐 Improved Jira client
+│   │   ├── templates.py        # 🎯 Human-readable template system
+│   │   └── template_translator.py # 🔄 Jira API translation
+│   ├── commands/               # 🖥️ CLI commands
+│   ├── utils/                  # 🛠️ Utilities
+│   └── __main__.py             # 🎯 CLI entry point
+├── templates/                  # 📋 Human-readable templates
+│   ├── APP-epic-core.j2        # APP epic template
+│   ├── RTDEV-epic-lifecycle.j2 # RTDEV epic template
+│   ├── RTDEV-bug-lifecycle.j2  # RTDEV bug template
+│   └── FIELD_MAPPINGS.md       # Field reference guide
+├── tests/                      # 🧪 Testing framework
+├── docs/                       # 📚 Documentation
+├── .gitignore                  # 🛡️ Comprehensive security
+├── env.template                # 📋 Configuration template
+└── requirements*.txt           # 📦 Dependencies
+```
+
 ## 🎨 **Available Templates & Projects**
 
 ### **Current Templates**
@@ -150,7 +175,6 @@ python3 -m jira_tools templates describe RTDEV-epic-lifecycle
 ## 📚 **Advanced Documentation**
 
 ### **Team Resources**
-- **[Team Setup Guide](TEAM_SETUP.md)** - Complete onboarding for new team members
 - **[Workflows & Troubleshooting](docs/WORKFLOWS_AND_TROUBLESHOOTING.md)** - Advanced workflows and problem solving
 - **[Staged Epic Workflow](docs/STAGED_EPIC_WORKFLOW.md)** - Collaborative epic creation process
 - **[Template Field Mappings](templates/FIELD_MAPPINGS.md)** - Field reference for custom templates
