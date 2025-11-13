@@ -6,38 +6,36 @@
 
 ---
 
-## 🤖 **AI-First Workflow** (Primary Usage)
+## 🤖 **Cursor AI-First Workflow** (Primary Usage)
 
-This tool is designed to work seamlessly with **Cursor**, **GitHub Copilot**, and other agentic AI systems. Instead of remembering complex commands, simply describe what you want to do in natural language.
+This tool is specifically designed for **Cursor AI** integration. Instead of memorizing commands, simply describe your Jira needs in natural language and let Cursor handle the technical details.
 
-### **✨ How It Works with AI**
+### **✨ How It Works with Cursor**
 
-1. **Describe your intent** in natural language to your AI assistant
-2. **AI translates** your request into the appropriate tool commands  
-3. **Tool executes** the Jira operations securely and efficiently
-4. **Results delivered** in your preferred format
+1. **Open this project in Cursor** - AI understands the entire codebase context
+2. **Describe your Jira task** in natural language to Cursor
+3. **Cursor translates** your request into the appropriate tool commands  
+4. **Tool executes** securely with your credentials
+5. **Results formatted** exactly how you need them
 
-### **🎯 Common AI Interactions**
+### **💡 Pro Tips for Cursor Users**
+
+- **Be specific**: Mention project (RTDEV/APP), team, and priority for better results
+- **Ask for explanations**: "Explain what this template does before running it"
+- **Request dry-runs**: "Show me what this would create without actually doing it"
+- **Format requests**: "Format the output for our team documentation"
+- **Role assignments**: "Assign the UX designer and technical writer to this epic"
+
+### **🚀 Advanced Cursor Workflows**
 
 ```
-👤 "Create an epic for the RTDEV platform-team for a new user authentication feature"
-🤖 Uses: python3 -m jira_tools epic "User Authentication Platform" --template RTDEV-epic-lifecycle --project RTDEV
+💬 "Create a high-priority bug for APP core-team, assign Sarah as UX designer, and format the result for our team meeting"
 
-👤 "Show me the details of ticket RTDEV-12345 in markdown format"  
-🤖 Uses: python3 -m jira_tools viewer RTDEV-12345 --format markdown
+💬 "I need to bulk-check the status of tickets RTDEV-12345, RTDEV-12346, and RTDEV-12347"
 
-👤 "What templates are available for APP project core-team work?"
-🤖 Uses: python3 -m jira_tools templates list
-        (Then filters/explains APP templates for core team)
+💬 "Help me understand what the RTDEV-epic-lifecycle template includes and when I should use it"
 
-👤 "Create a high-priority bug for the APP core-team and assign UX designer"
-🤖 Uses: python3 -m jira_tools epic "Critical User Flow Bug" --project APP \
-      --template APP-bug-core --priority "2 - High" --ux-designer "sarah.jones"
-
-👤 "Create an RTDEV lifecycle epic for dev-artifactory-lifecycle team with technical writer"
-🤖 Uses: python3 -m jira_tools epic "Artifactory Lifecycle Enhancement" --project RTDEV \
-      --template RTDEV-epic-lifecycle --team "dev-artifactory-lifecycle" \
-      --technical-writer "mike.chen" --commitment-level "Hard Commitment"
+💬 "Set up a complex epic with technical writer and architect assignments for our new mobile initiative"
 ```
 
 ### **💡 How to Get Better AI Results**
@@ -59,53 +57,116 @@ This tool is designed to work seamlessly with **Cursor**, **GitHub Copilot**, an
 ✅ "List all templates available for APP project work"
 ```
 
-### **🚀 Benefits of AI Integration**
+### **🚀 Why Cursor + Jira Tools = ⚡**
 
-- **Natural Language Interface** - No need to memorize command syntax
-- **Context Awareness** - AI can suggest appropriate templates and projects  
-- **Smart Defaults** - AI applies best practices automatically
-- **Error Prevention** - AI validates inputs before execution
-- **Rich Formatting** - AI can format outputs for your specific needs
+- **Full Codebase Context** - Cursor understands templates, configs, and project structure
+- **Natural Language Interface** - No command memorization needed
+- **Smart Suggestions** - Cursor suggests appropriate templates based on your project
+- **Error Prevention** - AI validates before execution and explains what will happen
+- **Rich Formatting** - Perfect output formatting for documentation, standups, reports
+- **Instant Learning** - Cursor teaches you the tool as you use it
 - **Workflow Integration** - Seamlessly fits into your existing development process
+
+### **🎯 Cursor-Specific Advantages**
+
+- **@codebase context** - Cursor sees all templates and configurations
+- **Real-time validation** - Cursor checks your .env setup and suggests fixes
+- **Smart completions** - Cursor autocompletes project names, team names, and options
+- **Documentation integration** - Cursor references this README and all docs automatically
 
 ---
 
-## ⚡ **Quick Setup (5 minutes)**
+## ⚡ **Cursor Setup (5 minutes)**
 
 ### **Prerequisites**
+- **Cursor IDE** - Download from cursor.com if not installed
 - **Python 3.9+** - `python3 --version`
 - **Your team's Jira access** - Organization Jira instance
 - **API token** - From your Jira profile settings
 
-### **Setup Steps**
+### **Cursor Setup Steps**
 
-1. **Clone and Install**
+1. **Clone and Open in Cursor**
 ```bash
 git clone https://github.com/yonatanp-jfrog/jira-workflow-tools.git
 cd jira-workflow-tools
-pip3 install -r requirements.txt
+cursor . # Opens project in Cursor
 ```
 
-2. **Configure Credentials**
-```bash
-cp env.template .env
-# Edit .env with your credentials:
-# JIRA_BASE_URL=https://your-org.atlassian.net
-# JIRA_AUTH_TOKEN=your_api_token_here
+2. **Install Dependencies (Let Cursor Help!)**
+```
+💬 Ask Cursor: "Install the Python dependencies for this project"
+🤖 Cursor will: pip3 install -r requirements.txt
 ```
 
-3. **Test Configuration**
-```bash
-python3 -m jira_tools test-config
-# Should show: ✅ Configuration valid, ✅ Connection successful!
+3. **Configure Credentials with Cursor**
+```
+💬 Ask Cursor: "Set up my Jira credentials using the env template"
+🤖 Cursor will:
+  - Copy env.template to .env
+  - Guide you through filling in your credentials
+  - Help you get your API token
 ```
 
-### **Getting Your API Token**
+4. **Test Setup with Cursor**
+```
+💬 Ask Cursor: "Test my Jira configuration"
+🤖 Cursor will: Run python3 -m jira_tools test-config
+✅ Should show: Configuration valid, Connection successful!
+```
+
+### **Getting Your API Token (or ask Cursor to guide you!)**
+```
+💬 Ask Cursor: "Help me get a Jira API token"
+🤖 Cursor will guide you through the process, or follow these steps:
+```
+
 1. Go to: **https://id.atlassian.com/manage-profile/security/api-tokens**
 2. Click **"Create API token"** (NOT "Create API token with scopes")
 3. Give it a name (e.g., "AI Jira Tools")
 4. Copy the generated token immediately (you won't see it again!)
 5. Paste the token into your `.env` file as `JIRA_AUTH_TOKEN=your_token_here`
+
+---
+
+## 🎯 **Daily Cursor Workflows**
+
+### **Typical Cursor Chat Examples**
+
+```
+💬 "I need to create an epic for the RTDEV platform team about improving our authentication system"
+
+🤖 Cursor responds: I'll help you create that epic. Based on your request, I'll use the RTDEV-epic-lifecycle template since this is for the platform team. Let me run:
+
+python3 -m jira_tools epic "Authentication System Improvements" \
+  --project RTDEV --template RTDEV-epic-lifecycle \
+  --team "dev-artifactory-lifecycle" --area "Features & Innovation"
+
+Would you like me to add any specific role assignments or adjust the priority?
+```
+
+```
+💬 "Show me the details of ticket RTDEV-12345 and format it nicely for our team standup"
+
+🤖 Cursor responds: I'll fetch that ticket and format it for your standup. Let me get the details:
+
+python3 -m jira_tools viewer RTDEV-12345 --format markdown
+
+This will give you a clean markdown format perfect for sharing in your standup notes.
+```
+
+```
+💬 "What Jira templates do we have available for APP project bugs?"
+
+🤖 Cursor responds: Let me check the available templates for you:
+
+python3 -m jira_tools templates list
+
+Based on the project structure, for APP project bugs you'll want to use:
+- APP-bug-core: For critical application bugs and customer issues
+
+Would you like me to show you what fields this template includes?
+```
 
 ---
 
@@ -186,9 +247,9 @@ python3 -m jira_tools templates describe RTDEV-epic-lifecycle
 
 ---
 
-## 🛠️ **Manual Usage** (Backup/Advanced Users)
+## 🛠️ **Manual Usage** (Advanced Users/Non-Cursor Scenarios)
 
-*For direct command-line usage without AI assistance*
+*For direct command-line usage when not using Cursor AI or for advanced automation*
 
 ### **Core Commands**
 ```bash
@@ -260,14 +321,15 @@ python3 -m jira_tools templates validate templates/APP-epic-core.j2
 
 ## 🎯 **System Status**
 
-| Component | Status | Security | AI Integration | Team Ready |
-|-----------|--------|----------|----------------|------------|
-| **Core System** | ✅ Production | ✅ Secure | ✅ Optimized | ✅ Yes |
-| **Templates** | ✅ Active | ✅ Validated | ✅ AI-Friendly | ✅ Yes |
-| **Documentation** | ✅ Complete | ✅ Reviewed | ✅ AI-Ready | ✅ Yes |
+| Component | Status | Security | Cursor Integration | Team Ready |
+|-----------|--------|----------|-------------------|------------|
+| **Core System** | ✅ Production | ✅ Secure | ✅ Fully Optimized | ✅ Yes |
+| **Templates** | ✅ Active | ✅ Validated | ✅ Context-Aware | ✅ Yes |
+| **Documentation** | ✅ Complete | ✅ Reviewed | ✅ Cursor-Ready | ✅ Yes |
+| **Cursor Workflows** | ✅ Tested | ✅ Secure | ✅ Native Support | ✅ Yes |
 
 ---
 
-**🎉 Ready to streamline your Jira workflow with AI-powered automation!**
+**🎉 Ready to streamline your Jira workflow with Cursor AI!**
 
-*Have questions? Ask your AI assistant to help you use this tool - that's what it's designed for!*
+*Have questions? Just ask Cursor - it knows this entire codebase and is designed to help you use these tools effortlessly!*
