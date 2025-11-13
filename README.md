@@ -20,19 +20,42 @@ This tool is designed to work seamlessly with **Cursor**, **GitHub Copilot**, an
 ### **🎯 Common AI Interactions**
 
 ```
-👤 "Create an epic for the new user authentication feature"
-🤖 Uses: python3 -m jira_tools epic "User Authentication" --template APP-epic-core --project APP
+👤 "Create an epic for the RTDEV platform-team for a new user authentication feature"
+🤖 Uses: python3 -m jira_tools epic "User Authentication Platform" --template RTDEV-epic-lifecycle --project RTDEV
 
 👤 "Show me the details of ticket RTDEV-12345 in markdown format"  
 🤖 Uses: python3 -m jira_tools viewer RTDEV-12345 --format markdown
 
-👤 "What templates are available for RTDEV projects?"
+👤 "What templates are available for APP project core-team work?"
 🤖 Uses: python3 -m jira_tools templates list
+        (Then filters/explains APP templates for core team)
 
-👤 "Create a complex epic with role assignments for the mobile team"
-🤖 Uses: python3 -m jira_tools epic "Mobile App Redesign" --project APP \
-      --template APP-epic-core --technical-writer "sarah.jones" \
-      --ux-designer "mike.chen" --area "Features & Innovation"
+👤 "Create a bug epic for the APP core-team with high priority and assign UX designer"
+🤖 Uses: python3 -m jira_tools epic "Critical User Flow Bug" --project APP \
+      --template APP-bug-core --priority "2 - High" --ux-designer "sarah.jones"
+
+👤 "Create an RTDEV lifecycle epic for dev-artifactory-lifecycle team with technical writer"
+🤖 Uses: python3 -m jira_tools epic "Artifactory Lifecycle Enhancement" --project RTDEV \
+      --template RTDEV-epic-lifecycle --team "dev-artifactory-lifecycle" \
+      --technical-writer "mike.chen" --commitment-level "Hard Commitment"
+```
+
+### **💡 How to Get Better AI Results**
+
+**Include these details in your requests for optimal AI assistance:**
+
+- **Project**: `RTDEV` or `APP`
+- **Team**: `platform-team`, `core-team`, `dev-artifactory-lifecycle`, `mobile-team`, etc.
+- **Type**: `epic`, `bug`, `task`, `story`
+- **Priority**: `high`, `critical`, `normal`, `low`
+- **Roles**: Mention if you need `technical-writer`, `ux-designer`, or `architect` assignments
+
+**Examples of well-structured requests:**
+```
+✅ "Create a high-priority bug epic for APP core-team with UX designer assigned"
+✅ "Make an RTDEV lifecycle epic for platform-team with technical writer"
+✅ "Show RTDEV-12345 details formatted for our team documentation"
+✅ "List all templates available for APP project work"
 ```
 
 ### **🚀 Benefits of AI Integration**
