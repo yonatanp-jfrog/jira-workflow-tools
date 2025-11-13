@@ -101,10 +101,11 @@ python3 -m jira_tools test-config
 ```
 
 ### **Getting Your API Token**
-1. Go to your Jira profile → **Security** → **API tokens**
-2. Click **Create API token**
+1. Go to: **https://id.atlassian.com/manage-profile/security/api-tokens**
+2. Click **"Create API token"** (NOT "Create API token with scopes")
 3. Give it a name (e.g., "AI Jira Tools")
-4. Copy the token and paste into `.env` file
+4. Copy the generated token immediately (you won't see it again!)
+5. Paste the token into your `.env` file as `JIRA_AUTH_TOKEN=your_token_here`
 
 ---
 
