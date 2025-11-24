@@ -2,47 +2,208 @@
 
 **Modern, secure, and AI-integrated toolkit for seamless Jira workflow management.**
 
-*Designed for AI assistants, perfect for humans.*
+*Designed for AI assistants, perfect for humans. This tool is specifically designed for **Cursor AI** integration - simply describe your Jira needs in natural language and let Cursor handle the technical details.*
 
----
-
-## 🤖 **Cursor AI-First Workflow** (Primary Usage)
-
-This tool is specifically designed for **Cursor AI** integration. Instead of memorizing commands, simply describe your Jira needs in natural language and let Cursor handle the technical details.
-
-### **✨ How It Works with Cursor**
-
-1. **Open this project in Cursor** - AI understands the entire codebase context
-2. **Describe your Jira task** in natural language to Cursor
-3. **Cursor translates** your request into the appropriate tool commands  
-4. **Tool executes** securely with your credentials
-5. **Results formatted** exactly how you need them
-
-### **💡 Pro Tips for Cursor Users**
-
-- **Be specific**: Mention project (RTDEV/APP), team, and priority for better results
-- **Ask for explanations**: "Explain what this template does before running it"
-- **Request dry-runs**: "Show me what this would create without actually doing it"
-- **Format requests**: "Format the output for our team documentation"
-- **Role assignments**: "Assign the UX designer and technical writer to this epic"
-
-### **🚀 Advanced Cursor Workflows**
+## 🚀 **Quick Examples**
 
 ```
 💬 "Create a high-priority bug for APP core-team, assign Sarah as UX designer, and format the result for our team meeting"
-
-💬 "I need to bulk-check the status of tickets RTDEV-12345, RTDEV-12346, and RTDEV-12347"
 
 💬 "Help me understand what the RTDEV-epic-lifecycle template includes and when I should use it"
 
 💬 "Set up a complex epic with technical writer and architect assignments for our new mobile initiative"
 
 💬 "Create an RTDEV bug for authentication issues and attach these files: error-screenshot.png, logs.txt, config.json"
-
-💬 "Create an APP epic with design mockups and technical specifications attached automatically"
 ```
 
-### **💡 How to Get Better AI Results**
+## 🚀 **Quick Start (2 minutes)**
+
+### **Prerequisites**
+- **Python 3.9+** - `python3 --version`
+- **JFrog Jira access** - Access to your team's Jira instance
+- **API token** - We'll help you create this during setup
+
+### **Automated Setup**
+
+**New Interactive Onboarding (Recommended):**
+```bash
+git clone https://github.com/yonatanp-jfrog/jira-workflow-tools.git
+cd jira-workflow-tools
+pip3 install -r requirements.txt
+python3 -m jira_tools onboard
+```
+
+### **🎯 What You'll See During Setup**
+
+The interactive wizard provides a friendly, step-by-step experience:
+
+**Welcome Screen:**
+```
+🎯 Welcome to JFrog Jira Workflow Tools Setup Wizard!
+
+This interactive setup will configure your environment in just a few minutes.
+We'll guide you through:
+• Jira connection and authentication
+• Project and team discovery  
+• Template personalization for JFrog workflows
+• Custom field mapping
+• Configuration validation
+
+Let's get you set up for productive Jira workflows!
+```
+
+**Step 1/6: JFrog Jira Configuration**
+```
+First, let's connect to your Jira instance.
+Jira URL [https://jfrog-int.atlassian.net]: ⏎
+   # Just press Enter to use JFrog default, or type custom URL
+
+⚡ Validating Jira connection... ✅ Connected successfully!
+   Server: Jira
+   Version: 9.4.0
+```
+
+**Step 2/6: Authentication Setup**
+```
+Now let's set up your authentication credentials.
+What's your JFrog email address?: john.doe@jfrog.com
+
+📝 Let's create your API token...
+Opening the Atlassian API token page...
+
+⚠️  IMPORTANT: When creating your token:
+   ✅ Click "Create API token" 
+   ❌ DO NOT click "Create API token with scopes"
+
+🌐 Browser opened to: https://id.atlassian.com/manage-profile/security/api-tokens
+
+After creating your token:
+1. Give it a name like 'JFrog Jira Tools'
+2. Copy the generated token
+3. Paste it below (input will be hidden)
+
+Paste your API token: ••••••••••••••••
+
+⚡ Testing authentication... ✅ Authentication successful!
+   Welcome, John Doe!
+   Account ID: 557058:f58131cb-b67d-43c7-b30d-6b58d40bd077
+```
+
+**Step 3/6: JFrog Project Discovery**
+```
+Let's discover your accessible projects and teams...
+✅ Found 23 accessible projects
+
+Which project do you primarily work with?
+Primary project [RTDEV]: ⏎
+   # Press Enter for RTDEV default, or type: APP, XRAY, etc.
+
+Do you work with any additional projects?
+Enter as comma-separated list (e.g., APP,XRAY) or press Enter to skip:
+Additional projects: APP,XRAY
+
+✅ Found 15 teams in your selected projects
+
+Available teams:
+┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Number ┃ Team Name                 ┃ Project   ┃
+┡━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━┩
+│ 1      │ dev-artifactory-lifecycle │ RTDEV     │
+│ 2      │ platform-team             │ RTDEV     │
+│ 3      │ app-core                  │ APP       │
+│ 4      │ security-team             │ Multiple  │
+│ ... (showing first 4 of 15 teams)
+
+Select your team (number or name): 1
+✅ Selected team: dev-artifactory-lifecycle
+```
+
+**Step 4/6: JFrog Template Personalization**
+```
+Let's customize templates with your JFrog preferences...
+
+Template preferences:
+Default priority for new issues? [High/Normal/Low] (Normal): ⏎
+Default Product Manager [john.doe@jfrog.com]: ⏎
+Epic naming prefix convention [RLM 4Q25 -]: ⏎
+Default Product Backlog format [Q4-25-Backlog]: Q1-26-Backlog
+Default Commitment Reason [Roadmap/Customer Commitment/Security] (Roadmap): ⏎
+
+✅ Template personalization settings saved!
+These will be used as defaults when creating new issues.
+```
+
+**Step 5/6: JFrog Custom Field Configuration**
+```
+Discovering JFrog Jira custom fields...
+✅ Using JFrog-standard custom field mappings
+   • Team field: customfield_10129
+   • Product Manager field: customfield_10044
+   • Commitment Level: customfield_10450
+   • Area: customfield_10167
+
+Epic prefix for RTDEV project [RTDEV]: ⏎
+```
+
+**Step 6/6: Configuration Validation & Testing**
+```
+Running final validation checks...
+⚡ Testing Jira API connection... ✅ Jira API connection
+⚡ Validating permissions... ✅ Permissions validated
+⚡ Saving configuration... ✅ Configuration saved
+```
+
+**🎉 Setup Complete!**
+```
+🎉 Setup Complete! Your JFrog Jira Workflow Tools are ready to use.
+
+📁 Configuration saved to: .env
+🏢 Connected to: https://jfrog-int.atlassian.net
+👤 User: john.doe@jfrog.com
+📂 Primary project: RTDEV
+👥 Team: dev-artifactory-lifecycle
+
+🚀 Try these commands to get started:
+
+Basic Commands:
+• python -m jira_tools epic "My First Epic" --project RTDEV
+• python -m jira_tools viewer RTDEV-12345
+• python -m jira_tools templates list
+
+Need help? Run: python -m jira_tools --help
+Re-run setup anytime: python -m jira_tools onboard --reconfigure
+```
+
+**⚡ Total setup time: Under 2 minutes!**
+
+### **Cursor AI Setup (Alternative)**
+
+1. **Clone and Open in Cursor**
+```bash
+git clone https://github.com/yonatanp-jfrog/jira-workflow-tools.git
+cd jira-workflow-tools
+cursor . # Opens project in Cursor
+```
+
+2. **Ask Cursor to Set Everything Up**
+```
+💬 Ask Cursor: "Run the interactive onboarding to set up my JFrog Jira tools"
+🤖 Cursor will: Run python3 -m jira_tools onboard and guide you through
+```
+
+### **Getting Your API Token (or ask Cursor to guide you!)**
+```
+💬 Ask Cursor: "Help me get a Jira API token"
+🤖 Cursor will guide you through the process, or follow these steps:
+```
+
+1. Go to: **https://id.atlassian.com/manage-profile/security/api-tokens**
+2. Click **"Create API token"** (NOT "Create API token with scopes")
+3. Give it a name (e.g., "AI Jira Tools")
+4. Copy the generated token immediately (you won't see it again!)
+5. Paste the token into your `.env` file as `JIRA_AUTH_TOKEN=your_token_here`
+
+## 💡 **How to Get Better AI Results**
 
 **Include these details in your requests for optimal AI assistance:**
 
@@ -61,7 +222,9 @@ This tool is specifically designed for **Cursor AI** integration. Instead of mem
 ✅ "List all templates available for APP project work"
 ```
 
-### **🚀 Why Cursor + Jira Tools = ⚡**
+## 🤖 **Why Cursor AI Integration?**
+
+**🚀 Cursor + Jira Tools = ⚡**
 
 - **Full Codebase Context** - Cursor understands templates, configs, and project structure
 - **Natural Language Interface** - No command memorization needed
@@ -71,7 +234,7 @@ This tool is specifically designed for **Cursor AI** integration. Instead of mem
 - **Instant Learning** - Cursor teaches you the tool as you use it
 - **Workflow Integration** - Seamlessly fits into your existing development process
 
-### **🎯 Cursor-Specific Advantages**
+**🎯 Cursor-Specific Advantages**
 
 - **@codebase context** - Cursor sees all templates and configurations
 - **Real-time validation** - Cursor checks your .env setup and suggests fixes
@@ -80,99 +243,6 @@ This tool is specifically designed for **Cursor AI** integration. Instead of mem
 
 ---
 
-## ⚡ **Cursor Setup (5 minutes)**
-
-### **Prerequisites**
-- **Cursor IDE** - Download from cursor.com if not installed
-- **Python 3.9+** - `python3 --version`
-- **Your team's Jira access** - Organization Jira instance
-- **API token** - From your Jira profile settings
-
-### **Cursor Setup Steps**
-
-1. **Clone and Open in Cursor**
-```bash
-git clone https://github.com/yonatanp-jfrog/jira-workflow-tools.git
-cd jira-workflow-tools
-cursor . # Opens project in Cursor
-```
-
-2. **Install Dependencies (Let Cursor Help!)**
-```
-💬 Ask Cursor: "Install the Python dependencies for this project"
-🤖 Cursor will: pip3 install -r requirements.txt
-```
-
-3. **Configure Credentials with Cursor**
-```
-💬 Ask Cursor: "Set up my Jira credentials using the env template"
-🤖 Cursor will:
-  - Copy env.template to .env
-  - Guide you through filling in your credentials
-  - Help you get your API token
-```
-
-4. **Test Setup with Cursor**
-```
-💬 Ask Cursor: "Test my Jira configuration"
-🤖 Cursor will: Run python3 -m jira_tools test-config
-✅ Should show: Configuration valid, Connection successful!
-```
-
-### **Getting Your API Token (or ask Cursor to guide you!)**
-```
-💬 Ask Cursor: "Help me get a Jira API token"
-🤖 Cursor will guide you through the process, or follow these steps:
-```
-
-1. Go to: **https://id.atlassian.com/manage-profile/security/api-tokens**
-2. Click **"Create API token"** (NOT "Create API token with scopes")
-3. Give it a name (e.g., "AI Jira Tools")
-4. Copy the generated token immediately (you won't see it again!)
-5. Paste the token into your `.env` file as `JIRA_AUTH_TOKEN=your_token_here`
-
----
-
-## 🎯 **Daily Cursor Workflows**
-
-### **Typical Cursor Chat Examples**
-
-```
-💬 "I need to create an epic for the RTDEV platform team about improving our authentication system"
-
-🤖 Cursor responds: I'll help you create that epic. Based on your request, I'll use the RTDEV-epic-lifecycle template since this is for the platform team. Let me run:
-
-python3 -m jira_tools epic "Authentication System Improvements" \
-  --project RTDEV --template RTDEV-epic-lifecycle \
-  --team "dev-artifactory-lifecycle" --area "Features & Innovation"
-
-Would you like me to add any specific role assignments or adjust the priority?
-```
-
-```
-💬 "Show me the details of ticket RTDEV-12345 and format it nicely for our team standup"
-
-🤖 Cursor responds: I'll fetch that ticket and format it for your standup. Let me get the details:
-
-python3 -m jira_tools viewer RTDEV-12345 --format markdown
-
-This will give you a clean markdown format perfect for sharing in your standup notes.
-```
-
-```
-💬 "What Jira templates do we have available for APP project bugs?"
-
-🤖 Cursor responds: Let me check the available templates for you:
-
-python3 -m jira_tools templates list
-
-Based on the project structure, for APP project bugs you'll want to use:
-- APP-bug-core: For critical application bugs and customer issues
-
-Would you like me to show you what fields this template includes?
-```
-
----
 
 ## 🔒 **Security & Team Features**
 

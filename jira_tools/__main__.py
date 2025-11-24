@@ -146,9 +146,51 @@ except ImportError:
         pass
     
     @main.command()
+    @click.option('--reconfigure', is_flag=True, help='Reconfigure existing setup')
+    @click.option('--quick', is_flag=True, help='Quick setup with defaults (skip customization steps)')
+    def onboard(reconfigure, quick):
+        """Interactive onboarding wizard for JFrog Jira Workflow Tools."""
+        try:
+            from .commands.onboard import OnboardingWizard
+            from rich.prompt import Confirm
+            from pathlib import Path
+            
+            # Check if already configured (unless reconfiguring)
+            env_path = Path('.env')
+            if env_path.exists() and not reconfigure:
+                if not Confirm.ask(
+                    "Configuration file (.env) already exists. Reconfigure?",
+                    default=False
+                ):
+                    console.print("Setup cancelled. Use --reconfigure to override.", style="yellow")
+                    return
+            
+            # Start the wizard
+            wizard = OnboardingWizard()
+            success = wizard.start()
+            
+            if success:
+                console.print("\n🎉 Onboarding completed successfully!", style="bold green")
+            else:
+                console.print("\n❌ Onboarding failed or was cancelled", style="bold red")
+                console.print("You can try again by running: python -m jira_tools onboard", style="yellow")
+                
+        except KeyboardInterrupt:
+            console.print("\n\n❌ Setup cancelled by user", style="red")
+        except Exception as e:
+            console.print(f"\n❌ Unexpected error during onboarding: {e}", style="red")
+            console.print("Please try again or report this issue", style="yellow")
+
+    @main.command()
     @click.option('--private', is_flag=True, help='Set up private mode')
     def setup(private):
-        """Set up Jira Workflow Tools configuration."""
+        """Legacy setup command - use 'onboard' for interactive setup."""
+        console.print("📋 Legacy Setup Mode")
+        console.print("")
+        console.print("💡 For a better experience, try the new interactive onboarding:")
+        console.print("   python -m jira_tools onboard")
+        console.print("")
+        
         if private:
             console.print("🔒 Private mode setup will be implemented in Phase 4")
             console.print("For now, please use environment variables:")
